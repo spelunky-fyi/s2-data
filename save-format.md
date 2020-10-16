@@ -325,16 +325,16 @@ Larger values are accepted, but seemingly don't do anything.
 ```
 eb: byte
     00 - Nothing Unlocked / Never met Terra
-    01 - 1-4 Shortcut - $2,000
-    02 - 1-4 Shortcut - 1 bomb
-    03 - 1-4 Shortcut - $10,000
-    04 - 3-1 Shortcut - 1 Rope
-    05 - 3-1 Shortcut - Weapon
-    06 - 3-1 Shortcut - Mount
-    07 - 5-1 Shortcut - $50,000
-    08 - 5-1 Shortcut - Hired Hand
-    09 - 5-1 Shortcut - Golden Key
-    0a - Unlocked All Shortcuts
+    01 - Met Terra                      - Yellow notice board will appear in hub
+    02 - 1-4 Shortcut - Gave $2,000
+    03 - 1-4 Shortcut - Gave 1 bomb
+    04 - 1-4 Shortcut - Gave $10,000    - 1-4 Shortcut unlocked
+    05 - 3-1 Shortcut - Gave 1 Rope
+    06 - 3-1 Shortcut - Gave Weapon
+    07 - 3-1 Shortcut - Gave Mount      - 3-1 Shortcut unlocked
+    08 - 5-1 Shortcut - Gave $50,000
+    09 - 5-1 Shortcut - Gave Hired Hand
+    0a - 5-1 Shortcut - Gave Golden Key - 5-1 Shortcut unlocked
 ```
 
 
