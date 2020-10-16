@@ -595,6 +595,10 @@ cba: int - 2-4
 1ca6: int - 6-3
 1caa: int - 6-4
 
+209a: int - 7-1
+209e: int - 7-2
+20a2: int - 7-3
+20a6: int - 7-4
 20aa: int - 7-5
 20ae: int - 7-6
 20b2: int - 7-7
