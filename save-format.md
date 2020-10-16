@@ -25,8 +25,10 @@ https://mossranking.com/discord
  * byte  - 1 Byte. Unknown type.
  * bool  - 1 Byte. 0x0 or 0x1
  * int   - 32 bit Integer. Little Endian
+ * int64 - 64 bit Integer. Little Endian
  * float - 32 bit Float. Little Endian
  * time  - 32 bit Integer. Multiply by 16.67 to get milliseconds.
+ * time  - 64 bit Integer. Multiply by 16.67 to get milliseconds.
 
 
 # Save Format
@@ -557,15 +559,15 @@ eb: byte
 49a: int  - Hard Wins
 49e: int  - Special Wins
 
-4a2: int  - Sum of Score
-4aa: int  - Top Score
+4a2: int64 - Sum of Score
+4aa: int   - Top Score
 # Seems to record Area as 8 once in CO. This
 # has impact on camp size.
 4ae: byte - Deepest Area
 4af: byte - Deepest Level
 
-288e: time - Sum of Time
-2896: time - Best Time
+288e: time64 - Sum of Time
+2896: time   - Best Time
 ```
 
 ## Area - Death Count
