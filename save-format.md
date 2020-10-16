@@ -746,6 +746,15 @@ Tracks whether you ever viewed the player profile. Used to determine if it shoul
 290e: time - Time
 ```
 
+## Player - Character Selection
+
+```
+2a7a: byte - Player 1
+2a7b: byte - Player 2
+2a7c: byte - Player 3
+2a7d: byte - Player 4
+```
+
 ## CRC32
 
 ```
