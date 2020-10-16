@@ -20,3 +20,15 @@ Note: The first 2 entries in each array appear to always be empty.
 00: uint32  - Number of Entries
 04: 8 bytes - Padding
 ```
+
+## Data
+
+| Offset | Type | Notes |
+| ------ | ---- | ----- |
+| 0000010 | uint64 LE | Steam / PSN IDs |
+| 07A1208 | 33 bytes. Fixed width string buffer. utf-8 | Usernames |
+| 2719C48 | 2 bytes | Unknown
+| 29020D0 | 4 bytes | Unknown
+| 30A32C8 | uint32 LE (Score), 4 bytes (Unknown) | Scores
+| 38444C0 | 4 bytes | Unknown
+| 3C14DC0 | 4 bytes | Unknown
