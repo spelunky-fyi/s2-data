@@ -568,6 +568,28 @@ eb: byte
 4af: byte - Deepest Level
 ```
 
+## Completion
+
+Booleans marking how you've beaten the game. Changes the appearance of the entrance.
+```
+2901: bool - Completed the game (Normal)
+2902: bool - Completed the game with no shortcuts (Ironman)
+2903: bool - Completed the game (Hard)
+```
+
+## Viewed Player Profile
+Tracks whether you ever viewed the player profile. Used to determine if it should show you a message saying it doesn't track seeded and multiplayer runs.
+
+```
+2904: bool
+```
+
+## Seeded Runs Unlocked
+
+```
+2905: bool
+```
+
 ## Last Game Played
 
 ```
@@ -592,15 +614,6 @@ eb: byte
 # Damsels Rescued
 0x28ea through 0x28ec tracks damsels of each type rescued across all playthroughs, including seeded runs. Goes in the same order as options (dog, cat, hamster). Above a certain value (untested) it causes pets to always appear in camp. It seems pets can also appear regardless of this value if your camp is big enough but without that many characters unlocked.
 
-# Completion
-0x2901-0x2903 is a boolean value that tracks whether you ever completed normal/ironman/hard in that order. It changes the appearance of the entrance.
-
-# Viewed Player Profile
-0x2904 is another boolean that tracks... whether you ever viewed the player profile (to determine if it should show you a message saying it doesn't track seeded and multiplayer runs). Not very useful but it's a thing.
-
-# Seeded Runs
-0x2905 determines if you have seeded runs unlocked
-So this way you can unlock seeded runs and have no statistics
 
 # Best Tutorial Time
 0xd6 is the best tutorial time record (seconds * 60)(edited)
