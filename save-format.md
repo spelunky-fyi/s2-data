@@ -601,6 +601,18 @@ Tracks whether you ever viewed the player profile. Used to determine if it shoul
 
 ## CRC32
 
+bit inverted CRC32 of all bytes between magic numbers (2 bytes) and this crc32 (4 bytes). 
+
+
+Example:
+
+```py
+>>> ~zlib.crc32(exe[2:-4])
+1819641176
+>>> struct.unpack('<L', exe[-4:])[0]
+1819641176
+```
+
 ```
 359a: int - CRC32
 ```
