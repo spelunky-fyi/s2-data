@@ -5,11 +5,11 @@
 
 # TODO
 
- [] Shortcuts
- [] Player Unlocks
- [] Camp Unlocks
- [] Constellations
- [] Sure there's more I'm missing...
+ - [ ] Shortcuts
+ - [ ] Player Unlocks
+ - [ ] Camp Unlocks
+ - [ ] Constellations
+ - [ ] Sure there's more I'm missing...
 
 
 # Types
