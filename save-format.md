@@ -14,8 +14,6 @@ https://mossranking.com/discord
 # TODO
 
  - [ ] Constellations
- - [ ] Player Profile
-   - [ ] Best Time
  - [ ] Last Played
    - [ ] Stickers
    - [ ] Last Played Character
@@ -567,6 +565,7 @@ eb: byte
 4af: byte - Deepest Level
 
 288e: time - Sum of Time
+2896: time - Best Time
 ```
 
 ## Area - Death Count
