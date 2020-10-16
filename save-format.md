@@ -13,11 +13,17 @@ https://mossranking.com/discord
 
 # TODO
 
- - [ ] Shortcuts
- - [ ] Player Unlocks
- - [ ] Camp Unlocks
+ - [ ] Shortcuts (in raw data)
+ - [ ] Player Unlocks (in raw data)
+ - [ ] Camp Unlocks (combination of 
  - [ ] Constellations
- - [ ] Sure there's more I'm missing...
+ - [ ] Player Profile
+   - [ ] Average Score
+   - [ ] Deadliest Level
+   - [ ] Average / Best Time
+ - [ ] Last Played
+   - [ ] Stickers
+ - [ ] Format Raw Data
 
 
 # Types
