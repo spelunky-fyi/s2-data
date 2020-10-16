@@ -565,6 +565,8 @@ eb: byte
 # has impact on camp size.
 4ae: byte - Deepest Area
 4af: byte - Deepest Level
+
+288e: time - Sum of Time
 ```
 
 ## Area - Death Count
