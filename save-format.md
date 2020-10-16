@@ -1,6 +1,14 @@
 # Credits
- * https://pastebin.com/jEAGuxGD - dextercd#7326 - Journal Entry Unlocks
- * https://pastebin.com/0pZZPt9F - dextercd#7326 - Constellations
+
+The following people helped out tremendously in the Spelunky Community Discord:
+https://mossranking.com/discord
+
+ * dextercd#7326
+    - Journal Entry Unlocks - https://pastebin.com/jEAGuxGD
+    - Constellations - https://pastebin.com/0pZZPt9F
+ * EngIo#7610
+ * iojonmbnmb#8149
+ * gary#9999
 
 
 # TODO
@@ -18,9 +26,17 @@
  * bool  - 1 Byte. 0x0 or 0x1
  * int   - 32 bit Integer. Little Endian
  * float - 32 bit Float. Little Endian
+ * time  - 32 bit Integer. Multiply by 16.67 to get milliseconds.
 
 
 # Save Format
+
+## Magic Number
+
+```
+00: byte - 19
+01: byte - 00
+```
 
 ## Journal Entry Unlocks
 
@@ -474,11 +490,80 @@
 ## Player Profile
 
 ```
-48e: int - Plays
-492: int - Deaths
-496: int - Normal Wins
-49a: int - Hard Wins
-49e: int - Special Wins
+48e: int  - Plays
+492: int  - Deaths
+496: int  - Normal Wins
+49a: int  - Hard Wins
+49e: int  - Special Wins
 
-4aa: int - Top Score
+4aa: int  - Top Score
+# Seems to record Area as 8 once in CO. This
+# has impact on camp size.
+4ae: byte - Deepest Area
+4af: byte - Deepest Level
+```
+
+## Last Game Played
+
+```
+2906: byte - Area
+2907: byte - Level
+290a: int  - Money
+290e: time - Time
+```
+
+## CRC32
+
+```
+359a: int - CRC32
+```
+
+
+# Raw Data
+
+```md
+
+# Player Unlocks
+
+Player unlocks is 3 bytes of information from 0xe6-0xe8. Every character has their own "bit" that you add to the value. A fully-unlocked save is ff ff 0f. Default characters included. Characters go in order they're unlocked on the menu.
+i.e. classic guy would be adding 8 to the last byte
+
+# Shortcuts
+Shortcut data is stored in 0xeb. It's a value from 00 to 0a signifying which step of the process you're on. Every item delivered increments the value by 1.
+As far as I can tell, larger values are accepted, but don't do anything
+
+# Damsels Rescued
+0x28ea through 0x28ec tracks damsels of each type rescued across all playthroughs, including seeded runs. Goes in the same order as options (dog, cat, hamster). Above a certain value (untested) it causes pets to always appear in camp. It seems pets can also appear regardless of this value if your camp is big enough but without that many characters unlocked.
+
+# Completion
+0x2901-0x2903 is a boolean value that tracks whether you ever completed normal/ironman/hard in that order. It changes the appearance of the entrance.
+
+# Viewed Player Profile
+0x2904 is another boolean that tracks... whether you ever viewed the player profile (to determine if it should show you a message saying it doesn't track seeded and multiplayer runs). Not very useful but it's a thing.
+
+# Seeded Runs
+0x2905 determines if you have seeded runs unlocked
+So this way you can unlock seeded runs and have no statistics
+
+# Best Tutorial Time
+0xd6 is the best tutorial time record (seconds * 60)(edited)
+My guess is it's 4 bytes like most of the values
+Little-endian
+08 07 nets you a time of exactly 30s
+
+# Score
+For some weird reason, score is stored as a signed integer, so the highest value possible is ff ff ff 7f. Larger values flip the sign integer and make it negative. This means with save editing you can give yourself a negative high score (which will be immediately overwritten the moment you play a daily or unseeded run)
+
+# Note about camp spawns
+If you unlock too many characters without setting a sufficient depth, the camp will remain at its current size (usually so small that NPCs will spawn inside a wall on the right and die instantly). The opposite is also true where if you set a large depth with no character unlocks, the camp will get bigger, but only damsels will inhabit it until you get more characters unlocked.
+
+# Regarding Jungle in Tutorial
+
+Kind of? I had to change 0xea to 04 and ensure Nekka was unlocked, but I still have no idea what the byte at 0xea does aside from that.
+
+# Journal Pickups
+
+0xe2: remaining pick-up journal
+0xea: count of picked-up journal (initial tutorial + letter stuffs)
+
 ```
