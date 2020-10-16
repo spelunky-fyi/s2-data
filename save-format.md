@@ -22,13 +22,13 @@ https://mossranking.com/discord
 
 # Types
 
- * byte  - 1 Byte. Unknown type.
- * bool  - 1 Byte. 0x0 or 0x1
- * int   - 32 bit Integer. Little Endian
- * int64 - 64 bit Integer. Little Endian
- * float - 32 bit Float. Little Endian
- * time  - 32 bit Integer. Multiply by 16.67 to get milliseconds.
- * time  - 64 bit Integer. Multiply by 16.67 to get milliseconds.
+ * byte    - 1 Byte. Unknown type.
+ * bool    - 1 Byte. 0x0 or 0x1
+ * int     - 32 bit Integer. Little Endian
+ * int64   - 64 bit Integer. Little Endian
+ * float   - 32 bit Float. Little Endian
+ * time    - 32 bit Integer. Multiply by 16.67 to get milliseconds.
+ * time64  - 64 bit Integer. Multiply by 16.67 to get milliseconds.
 
 
 # Save Format
@@ -760,6 +760,31 @@ Tracks whether you ever viewed the player profile. Used to determine if it shoul
 2a7b: byte - Player 2
 2a7c: byte - Player 3
 2a7d: byte - Player 4
+```
+
+Values: 
+
+```
+0x00 - Ana Spelunky
+0x01 - Margaret Tunnel
+0x02 - Colin Northward
+0x03 - Roffy D. Sloth
+0x04 - Alto Singh
+0x05 - Liz Mutton
+0x06 - Nekka the Eagle
+0x07 - Lise Project
+0x08 - Coco von Diamonds
+0x09 - Manfred Tunnel
+0x0a - Little Jay
+0x0b - Tina Flan
+0x0c - Valerie Crump
+0x0d - Au
+0x0e - Demi von Diamonds
+0x0f - Pilot
+0x10 - Princess Airyn
+0x11 - Dirk Yamaoka
+0x12 - Guy Spelunky
+0x13 - Classic Spelunky
 ```
 
 ## CRC32
