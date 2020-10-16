@@ -318,7 +318,7 @@ e8: byte
 
 ## Shortcut Unlocks
 
-A value from `00` to `0a` signifying which step in the process you're on. Every item delivered increments the value by 1.
+A value from `00` to `0a` signifying which steps you've completed. Every item delivered increments the value by 1.
 
 Larger values are accepted, but seemingly don't do anything.
 
