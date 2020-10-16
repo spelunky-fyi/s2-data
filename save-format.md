@@ -690,6 +690,31 @@ cba: int - 2-4
 221e: int - 7-98
 ```
 
+## Character - Death Counts
+
+```
+289a: int - Ana Spelunky
+289e: int - Margaret Tunnel
+28a2: int - Colin Northward
+28a6: int - Roffy D. Sloth
+28aa: int - Alto Singh
+28ae: int - Liz Mutton
+28b2: int - Nekka the Eagle
+28b6: int - Lise Project
+28ba: int - Coco von Diamonds
+28be: int - Manfred Tunnel
+28c2: int - Little Jay
+28c6: int - Tina Flan
+28ca: int - Valerie Crump
+28ce: int - Au
+28d2: int - Demi von Diamonds
+28d6: int - Pilot
+28da: int - Princess Airyn
+28de: int - Dirk Yamaoka
+28e2: int - Guy Spelunky
+28e6: int - Classic Spelunky
+```
+
 ## Completion
 
 Booleans marking how you've beaten the game. Changes the appearance of the entrance.
