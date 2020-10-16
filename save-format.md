@@ -3,6 +3,15 @@
  * https://pastebin.com/0pZZPt9F - dextercd#7326 - Constellations
 
 
+# TODO
+
+ [] Shortcuts
+ [] Player Unlocks
+ [] Camp Unlocks
+ [] Constellations
+ [] Sure there's more I'm missing...
+
+
 # Types
 
  * byte  - 1 Byte. Unknown type.
