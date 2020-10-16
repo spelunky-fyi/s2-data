@@ -13,9 +13,6 @@ https://mossranking.com/discord
 
 # TODO
 
- - [ ] Shortcuts (in raw data)
- - [ ] Player Unlocks (in raw data)
- - [ ] Camp Unlocks (combination of 
  - [ ] Constellations
  - [ ] Player Profile
    - [ ] Average Score
@@ -23,6 +20,7 @@ https://mossranking.com/discord
    - [ ] Average / Best Time
  - [ ] Last Played
    - [ ] Stickers
+   - [ ] Last Played Character
  - [ ] Format Raw Data
 
 
@@ -279,6 +277,45 @@ https://mossranking.com/discord
  d3: bool - Discovered Egg Sac
 ```
 
+## Player Unlocks
+
+Playable characters each have their own bit offset in the following 3 bytes.
+Discovering characters in the Journal is not enough to unlock them as playable, they must have
+a bit toggled here. A fully-unlocked save is `0xff 0xff 0x0f`.
+
+Note: It is possibly to remove the default characters by editing these values.
+
+> **:warning: Warning**: Unlocking characters without setting approriate Furthest Depth will result in characters spawning in walls as the camp size hasn't grown to accomodate the new characters.
+
+```
+e6: byte
+    0 - Ana
+    1 - Margaret
+    2 - Colin
+    3 - Roffy
+    4 - Alto
+    5 - Liz
+    6 - Nekka
+    7 - LISE
+
+e7: byte
+    0 - Coco
+    1 - Manfred
+    2 - Jay
+    3 - Tina
+    4 - Valerie
+    5 - Au
+    6 - Demi
+    7 - Pilot
+
+e8: byte
+    0 - Airyn
+    1 - Dirk
+    2 - Guy
+    3 - Classic Guy
+
+```
+
 ## Journal Entry Counts
 
 ### Bestiary - Defeated Counts
@@ -529,10 +566,6 @@ https://mossranking.com/discord
 
 ```md
 
-# Player Unlocks
-
-Player unlocks is 3 bytes of information from 0xe6-0xe8. Every character has their own "bit" that you add to the value. A fully-unlocked save is ff ff 0f. Default characters included. Characters go in order they're unlocked on the menu.
-i.e. classic guy would be adding 8 to the last byte
 
 # Shortcuts
 Shortcut data is stored in 0xeb. It's a value from 00 to 0a signifying which step of the process you're on. Every item delivered increments the value by 1.
