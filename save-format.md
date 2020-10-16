@@ -316,6 +316,28 @@ e8: byte
 
 ```
 
+## Shortcut Unlocks
+
+A value from `00` to `0a` signifying which step in the process you're on. Every item delivered increments the value by 1.
+
+Larger values are accepted, but seemingly don't do anything.
+
+```
+eb: byte
+    00 - Nothing Unlocked / Never met Terra
+    01 - 1-4 Shortcut - $2,000
+    02 - 1-4 Shortcut - 1 bomb
+    03 - 1-4 Shortcut - $10,000
+    04 - 3-1 Shortcut - 1 Rope
+    05 - 3-1 Shortcut - Weapon
+    06 - 3-1 Shortcut - Mount
+    07 - 5-1 Shortcut - $50,000
+    08 - 5-1 Shortcut - Hired Hand
+    09 - 5-1 Shortcut - Golden Key
+    0a - Unlocked All Shortcuts
+```
+
+
 ## Journal Entry Counts
 
 ### Bestiary - Defeated Counts
@@ -566,10 +588,6 @@ e8: byte
 
 ```md
 
-
-# Shortcuts
-Shortcut data is stored in 0xeb. It's a value from 00 to 0a signifying which step of the process you're on. Every item delivered increments the value by 1.
-As far as I can tell, larger values are accepted, but don't do anything
 
 # Damsels Rescued
 0x28ea through 0x28ec tracks damsels of each type rescued across all playthroughs, including seeded runs. Goes in the same order as options (dog, cat, hamster). Above a certain value (untested) it causes pets to always appear in camp. It seems pets can also appear regardless of this value if your camp is big enough but without that many characters unlocked.
