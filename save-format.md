@@ -15,7 +15,7 @@ https://mossranking.com/discord
 
  - [ ] Constellations
  - [ ] Player Profile
-   - [ ] Average / Best Time
+   - [ ] Best Time
  - [ ] Last Played
    - [ ] Stickers
    - [ ] Last Played Character
