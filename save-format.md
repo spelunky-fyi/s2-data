@@ -560,6 +560,7 @@ eb: byte
 49a: int  - Hard Wins
 49e: int  - Special Wins
 
+4a2: int  - Sum of Score
 4aa: int  - Top Score
 # Seems to record Area as 8 once in CO. This
 # has impact on camp size.
