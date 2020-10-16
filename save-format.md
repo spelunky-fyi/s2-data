@@ -253,8 +253,83 @@
 ### Bestiary - Defeated Counts
 
 ```
-0EE: int - Snake
-0F2: int - Spider
+0ee: int - Snake
+0f2: int - Spider
+0f6: int - Bat
+0fa: int - Caveman
+0fe: int - Skeleton
+102: int - Horned Lizard
+106: int - Moles
+10a: int - Quillback
+10e: int - Mantrap
+112: int - Tiki Man
+116: int - Witch Doctor
+11a: int - Mosquito
+11e: int - Monkey
+122: int - Hang Spider
+126: int - Giant Spider
+12a: int - Magmar
+12e: int - Robot
+132: int - Fire Bug
+136: int - Imp
+13a: int - Lavamander
+13e: int - Vampire
+142: int - Vlad
+146: int - Olmec
+14a: int - Jiangshi
+14e: int - Jiangshi Assassin
+152: int - Flying Fish
+156: int - Octopy
+15a: int - Hermit Crab
+15e: int - Pangxie
+162: int - Great Humphead
+166: int - Kingu
+16a: int - Crocman
+16e: int - Cobra
+172: int - Mummy
+176: int - Sorceress
+17a: int - Cat Mummy
+17e: int - Necromancer
+182: int - Anubis
+186: int - Ammit
+18a: int - Apep
+18e: int - Anubis II
+192: int - Osiris
+196: int - Ufo
+19a: int - Alien
+19e: int - Yeti
+1a2: int - Yeti King
+1a6: int - Yeti Queen
+1aa: int - Lahamu
+1ae: int - Proto Shopkeeper
+1b2: int - Olmite
+1b6: int - Lamassu
+1ba: int - Tiamat
+1be: int - Tadpole
+1c2: int - Frog
+1c6: int - Fire Frog
+1ca: int - Goliath Frog
+1ce: int - Grub
+1d2: int - Giant Fly
+1d6: int - Hundun
+1da: int - Eggplant Minister
+1de: int - Eggplup
+1e2: int - Celestial Jelly
+1e6: int - Scorpion
+1ea: int - Bee
+1ee: int - Queen Bee
+1f2: int - Scarab
+1f6: int - Golden Monkey
+1fa: int - Leprechaun
+1fe: int - Monty
+202: int - Percy
+206: int - Poochi
+20a: int - Ghist
+20e: int - Ghost
+212: int - Cave Turkey
+216: int - Rock Dog
+21a: int - Axolotl
+21e: int - Qilin
 222: int - Mech Rider
 ```
 
@@ -262,37 +337,139 @@
 
 ```
 226: int - Snake
-23E: int - cave mole
-27E: int - olmec 
+22a: int - Spider
+22e: int - Bat
+232: int - Caveman
+236: int - Skeleton
+23a: int - Horned Lizard
+23e: int - Moles
+242: int - Quillback
+246: int - Mantrap
+24a: int - Tiki Man
+24e: int - Witch Doctor
+252: int - Mosquito
+256: int - Monkey
+25a: int - Hang Spider
+25e: int - Giant Spider
+262: int - Magmar
+266: int - Robot
+26a: int - Fire Bug
+26e: int - Imp
+272: int - Lavamander
+276: int - Vampire
+27a: int - Vlad
+27e: int - Olmec
+282: int - Jiangshi
+286: int - Jiangshi Assassin
+28a: int - Flying Fish
+28e: int - Octopy
+292: int - Hermit Crab
+296: int - Pangxie
+29a: int - Great Humphead
+29e: int - Kingu
+2a2: int - Crocman
+2a6: int - Cobra
+2aa: int - Mummy
+2ae: int - Sorceress
+2b2: int - Cat Mummy
+2b6: int - Necromancer
+2ba: int - Anubis
+2be: int - Ammit
+2c2: int - Apep
+2c6: int - Anubis II
+2ca: int - Osiris
+2ce: int - Ufo
+2d2: int - Alien
+2d6: int - Yeti
+2da: int - Yeti King
+2de: int - Yeti Queen
+2e2: int - Lahamu
+2e6: int - Proto Shopkeeper
+2ea: int - Olmite
+2ee: int - Lamassu
+2f2: int - Tiamat
+2f6: int - Tadpole
+2fa: int - Frog
+2fe: int - Fire Frog
+302: int - Goliath Frog
+306: int - Grub
+30a: int - Giant Fly
+30e: int - Hundun
+312: int - Eggplant Minister
+316: int - Eggplup
+31a: int - Celestial Jelly
+31e: int - Scorpion
+322: int - Bee
+326: int - Queen Bee
+32a: int - Scarab
+32e: int - Golden Monkey
+332: int - Leprechaun
+336: int - Monty
+33a: int - Percy
+33e: int - Poochi
+342: int - Ghist
+346: int - Ghost
+34a: int - Cave Turkey
+34e: int - Rock Dog
+352: int - Axolotl
+356: int - Qilin
+35a: int - Mech Rider
 ```
 
 ### People - Killed Counts
 
 ```
-3B2: int - Hired Hand
-3BA: int - Shopkeeper
-3F2: int - Eggplant King
+3b2: int - Hired Hand
+3b6: int - Eggplant Child
+3ba: int - Shopkeeper
+3be: int - Tun
+3c2: int - Yang
+3c6: int - Madame Tusk
+3ca: int - Tusk's Bodyguard
+3ce: int - Waddler
+3d2: int - Caveman Shopkeeper
+3d6: int - Ghist Shopkeeper
+3da: int - Van Horsing
+3de: int - Parsley
+3e2: int - Parsnip
+3e6: int - Parmesan
+3ea: int - Sparrow
+3ee: int - Beg
+3f2: int - Eggplant King
 ```
 
 
 ### People - Killed By Counts
 
 ```
-44A: int - Hired Hand
+44a: int - Hired Hand
+44e: int - Eggplant Child
 452: int - Shopkeeper
-46E: int - Ghist Shopkeeper
-48A: int - Eggplant King
+456: int - Tun
+45a: int - Yang
+45e: int - Madame Tusk
+462: int - Tusk's Bodyguard
+466: int - Waddler
+46a: int - Caveman Shopkeeper
+46e: int - Ghist Shopkeeper
+472: int - Van Horsing
+476: int - Parsley
+47a: int - Parsnip
+47e: int - Parmesan
+482: int - Sparrow
+486: int - Beg
+48a: int - Eggplant King
 ```
 
 
 ## Player Profile
 
 ```
-48E: int - Plays
+48e: int - Plays
 492: int - Deaths
 496: int - Normal Wins
-49A: int - Hard Wins
-49E: int - Special Wins
+49a: int - Hard Wins
+49e: int - Special Wins
 
-4AA: int - Top Score
+4aa: int - Top Score
 ```
