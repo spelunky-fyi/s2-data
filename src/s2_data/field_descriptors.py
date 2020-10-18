@@ -51,20 +51,22 @@ class ByteType(Type):
         return bytes([value])
 
 class FlagType(Type):
+    _size = None
     flag_definition = None
+
+    def __init__(self, size, flag_definition):
+        self._size = size
+        self.flag_definition = flag_definition
 
     @property
     def size(self):
-        return 4
-
-    def __init__(self, flag_definition):
-        self.flag_definition = flag_definition
+        return self._size
 
     def from_binary(self, binary):
-        return self.flag_definition(struct.unpack('<i', binary)[0])
+        return self.flag_definition(int.from_bytes(binary, byteorder='little'))
 
     def to_binary(self, value):
-        return bytes([value])
+        return value.to_bytes(length=self.size, byteorder='little')
 
 class EnumType(Type):
     _size = None
@@ -352,7 +354,7 @@ field_descriptors = {
         FieldDescriptor(0xd3, "Discovered Egg Sac",          '', BoolType()),
     ),
     'Character Unlocks': (
-        FieldDescriptor(0xe6, "Unlock field", '', FlagType(CharacterUnlockFlags)),
+        FieldDescriptor(0xe6, "Unlock field", '', FlagType(4, CharacterUnlockFlags)),
     ),
     'Shortcut Unlocks': (
         FieldDescriptor(0xeb, "Shortcut Progress", '', EnumType(1, ShortcutProgressEnum)),
