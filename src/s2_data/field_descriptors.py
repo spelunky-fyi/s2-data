@@ -1,7 +1,6 @@
 from dataclasses import dataclass
 from abc import ABC, abstractmethod
 from enum import IntFlag, IntEnum, auto
-import struct
 
 class Type(ABC):
     @property
@@ -34,10 +33,10 @@ class Int32Type(Type):
         return 4
 
     def from_binary(self, binary):
-        return struct.unpack('<i', binary)[0]
+        return int.from_bytes(binary, byteorder='little', signed=True)
 
     def to_binary(self, value):
-        return struct.pack('<i', value)
+        return value.to_bytes(lenth=self.size, byteorder='little', signed=True)
 
 class ByteType(Type):
     @property
