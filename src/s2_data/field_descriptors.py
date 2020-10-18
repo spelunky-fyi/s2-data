@@ -1,6 +1,6 @@
 from dataclasses import dataclass
 from abc import ABC, abstractmethod
-from enum import IntFlag, IntEnum, auto
+from enum import IntFlag, IntEnum
 
 class Type(ABC):
     @property
@@ -97,26 +97,26 @@ class EnumType(Type):
         return value.to_bytes(lenth = self.size, byteorder = 'little')
 
 class CharacterUnlockFlags(IntFlag):
-    Ana = auto()
-    Margaret = auto()
-    Colin = auto()
-    Roffy = auto()
-    Alto = auto()
-    Liz = auto()
-    Nekka = auto()
-    LISE = auto()
-    Coco = auto()
-    Manfred = auto()
-    Jay = auto()
-    Tina = auto()
-    Valerie = auto()
-    Au = auto()
-    Demi = auto()
-    Pilot = auto()
-    Airyn = auto()
-    Dirk = auto()
-    Guy = auto()
-    ClassicGuy = auto()
+    Ana        = 0x1
+    Margaret   = 0x2
+    Colin      = 0x4
+    Roffy      = 0x8
+    Alto       = 0x10
+    Liz        = 0x20
+    Nekka      = 0x40
+    LISE       = 0x80
+    Coco       = 0x100
+    Manfred    = 0x200
+    Jay        = 0x400
+    Tina       = 0x800
+    Valerie    = 0x1000
+    Au         = 0x2000
+    Demi       = 0x4000
+    Pilot      = 0x8000
+    Airyn      = 0x10000
+    Dirk       = 0x20000
+    Guy        = 0x40000
+    ClassicGuy = 0x80000
 
 class ShortcutProgressEnum(IntEnum):
     NotMet = 0x0
