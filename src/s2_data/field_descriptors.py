@@ -38,6 +38,17 @@ class Int32Type(Type):
     def to_binary(self, value):
         return value.to_bytes(lenth=self.size, byteorder='little', signed=True)
 
+class Int64Type(Type):
+    @property
+    def size(self):
+        return 8
+
+    def from_binary(self, binary):
+        return int.from_bytes(binary, byteorder='little', signed=True)
+
+    def to_binary(self, value):
+        return value.to_bytes(lenth=self.size, byteorder='little', signed=True)
+
 class ByteType(Type):
     @property
     def size(self):
@@ -556,4 +567,17 @@ field_descriptors = {
         FieldDescriptor(0x486, "Beg",                '', Int32Type()),
         FieldDescriptor(0x48a, "Eggplant King",      '', Int32Type()),
     ),
+    'Player Profile': (
+        FieldDescriptor(0x048e, "Plays",         '', Int32Type()),
+        FieldDescriptor(0x0492, "Deaths",        '', Int32Type()),
+        FieldDescriptor(0x0496, "Normal Wins",   '', Int32Type()),
+        FieldDescriptor(0x049a, "Hard Wins",     '', Int32Type()),
+        FieldDescriptor(0x049e, "Special Wins",  '', Int32Type()),
+        FieldDescriptor(0x04a2, "Sum of Score",  '', Int64Type()),
+        FieldDescriptor(0x04aa, "Top Score",     '', Int32Type()),
+        FieldDescriptor(0x04ae, "Deepest Area",  '', ByteType()),
+        FieldDescriptor(0x04af, "Deepest Level", '', ByteType()),
+        FieldDescriptor(0x288e, "Sum of Time",   '', Int64Type()),
+        FieldDescriptor(0x2896, "Best Time",     '', Int32Type()),
+    )
 }
