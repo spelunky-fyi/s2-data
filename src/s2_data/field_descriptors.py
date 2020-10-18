@@ -1,6 +1,6 @@
 from dataclasses import dataclass
 from abc import ABC, abstractmethod
-from enum import IntFlag, auto
+from enum import IntFlag, IntEnum, auto
 import struct
 
 class Type(ABC):
@@ -66,6 +66,24 @@ class FlagType(Type):
     def to_binary(self, value):
         return bytes([value])
 
+class EnumType(Type):
+    _size = None
+    enum_definition = None
+
+    def __init__(self, size, enum_definition):
+        self._size = size
+        self.enum_definition = enum_definition
+
+    @property
+    def size(self):
+        return self._size
+
+    def from_binary(self, binary):
+        return self.enum_definition(int.from_bytes(binary, byteorder = 'little'))
+
+    def to_binary(self, value):
+        return value.to_bytes(lenth = self.size, byteorder = 'little')
+
 class CharacterUnlockFlags(IntFlag):
     Ana = auto()
     Margaret = auto()
@@ -87,6 +105,19 @@ class CharacterUnlockFlags(IntFlag):
     Dirk = auto()
     Guy = auto()
     ClassicGuy = auto()
+
+class ShortcutProgressEnum(IntEnum):
+    NotMet = 0x0
+    Met = 0x1
+    S1d4Gave2000 = 0x2
+    S1d4GaveBomb = 0x3
+    S1d4Gave10000 = 0x4
+    S3d1GaveRope = 0x5
+    S3d1GaveWeapon = 0x6
+    S3d1GaveMount = 0x7
+    S5d1Gave50000 = 0x8
+    S5d1GaveHiredHand = 0x9
+    S5d1GaveGoldenKey = 0xa
 
 @dataclass(frozen = True)
 class FieldDescriptor:
@@ -322,5 +353,8 @@ field_descriptors = {
     ),
     'Character Unlocks': (
         FieldDescriptor(0xe6, "Unlock field", '', FlagType(CharacterUnlockFlags)),
+    ),
+    'Shortcut Unlocks': (
+        FieldDescriptor(0xeb, "Shortcut Progress", '', EnumType(1, ShortcutProgressEnum)),
     ),
 }

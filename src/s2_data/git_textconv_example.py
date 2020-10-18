@@ -16,6 +16,6 @@ with io.open(sys.argv[1], 'rb') as save_file:
 
             value = element.type.from_binary(save[field_start:field_end])
 
-            print(f'{element.name:30} = {value}')
+            print(f'{element.name:30} =', value)
 
         print(end='\n\n')
