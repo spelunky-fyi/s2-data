@@ -727,5 +727,10 @@ field_descriptors = {
         'dirk_yamaoka':      FieldDescriptor(0x28de, "Dirk Yamaoka",      Int32Type()),
         'guy_spelunky':      FieldDescriptor(0x28e2, "Guy Spelunky",      Int32Type()),
         'classic_spelunky':  FieldDescriptor(0x28e6, "Classic Spelunky",  Int32Type()),
-    })
+    }),
+    'completion': Category('Completion', {
+        'normal':  FieldDescriptor(0x2901, "Completed the game (Normal)",                    BoolType()),
+        'ironman': FieldDescriptor(0x2902, "Completed the game with no shortcuts (Ironman)", BoolType()),
+        'hard':    FieldDescriptor(0x2903, "Completed the game (Hard)",                      BoolType()),
+    }),
 }
