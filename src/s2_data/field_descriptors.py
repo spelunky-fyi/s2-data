@@ -733,4 +733,7 @@ field_descriptors = {
         'ironman': FieldDescriptor(0x2902, "Completed the game with no shortcuts (Ironman)", BoolType()),
         'hard':    FieldDescriptor(0x2903, "Completed the game (Hard)",                      BoolType()),
     }),
+    'viewed_player_profile': Category('Viewed Player Profile', {
+        'viewed': FieldDescriptor(0x2904, 'Viewed', BoolType()),
+    }),
 }
