@@ -132,6 +132,28 @@ class ShortcutProgressEnum(IntEnum):
     S5d1GaveHiredHand = 0x9
     S5d1GaveGoldenKey = 0xa
 
+class CharacterSelectedEnum(IntEnum):
+    Ana        = 0x00
+    Margaret   = 0x01
+    Colin      = 0x02
+    Roffy      = 0x03
+    Alto       = 0x04
+    Liz        = 0x05
+    Nekka      = 0x06
+    LISE       = 0x07
+    Coco       = 0x08
+    Manfred    = 0x09
+    Jay        = 0x0a
+    Tina       = 0x0b
+    Valerie    = 0x0c
+    Au         = 0x0d
+    Demi       = 0x0e
+    Pilot      = 0x0f
+    Airyn      = 0x10
+    Dirk       = 0x11
+    Guy        = 0x12
+    ClassicGuy = 0x13
+
 @dataclass(frozen = True)
 class FieldDescriptor:
     offset: int
@@ -744,5 +766,11 @@ field_descriptors = {
         'level': FieldDescriptor(0x2907, 'Level', ByteType()),
         'money': FieldDescriptor(0x290a, 'Money', Int32Type()),
         'time':  FieldDescriptor(0x290e, 'Time',  Int32Type()),
+    }),
+    'character_selected': Category('Player - Character Selection', {
+        'player_1': FieldDescriptor(0x2a7a, "Player 1", EnumType(1, CharacterSelectedEnum)),
+        'player_2': FieldDescriptor(0x2a7b, "Player 2", EnumType(1, CharacterSelectedEnum)),
+        'player_3': FieldDescriptor(0x2a7c, "Player 3", EnumType(1, CharacterSelectedEnum)),
+        'player_4': FieldDescriptor(0x2a7d, "Player 4", EnumType(1, CharacterSelectedEnum)),
     }),
 }
