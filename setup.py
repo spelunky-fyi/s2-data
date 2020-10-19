@@ -70,6 +70,7 @@ setup(
     # executes the function `main` from this package when invoked:
     entry_points={  # Optional
         'console_scripts': [
+            's2save-to-text=s2_data.command_line:to_text'
         ],
     },
     include_package_data = True,
