@@ -6,15 +6,15 @@ import typing
 class Type(ABC):
     @property
     @abstractmethod
-    def size(self):
+    def size(self) -> int:
         raise NotImplementedError()
 
     @abstractmethod
-    def from_binary(self, binary):
+    def from_binary(self, binary: bytes) -> typing.Any:
         raise NotImplementedError()
 
     @abstractmethod
-    def to_binary(self, binary):
+    def to_binary(self, value: typing.Any) -> bytes:
         raise NotImplementedError()
 
 class BoolType(Type):
