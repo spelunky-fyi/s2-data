@@ -736,4 +736,7 @@ field_descriptors = {
     'viewed_player_profile': Category('Viewed Player Profile', {
         'viewed': FieldDescriptor(0x2904, 'Viewed', BoolType()),
     }),
+    'unlocked_seeded_runs': Category('Seeded Runs Unlocked', {
+        'unlocked': FieldDescriptor(0x2905, 'Unlocked', BoolType()),
+    }),
 }
