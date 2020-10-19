@@ -739,4 +739,10 @@ field_descriptors = {
     'unlocked_seeded_runs': Category('Seeded Runs Unlocked', {
         'unlocked': FieldDescriptor(0x2905, 'Unlocked', BoolType()),
     }),
+    'last_game_played': Category('Last Game Played', {
+        'area':  FieldDescriptor(0x2906, 'Area',  ByteType()),
+        'level': FieldDescriptor(0x2907, 'Level', ByteType()),
+        'money': FieldDescriptor(0x290a, 'Money', Int32Type()),
+        'time':  FieldDescriptor(0x290e, 'Time',  Int32Type()),
+    }),
 }
