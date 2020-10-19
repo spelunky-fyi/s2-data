@@ -39,6 +39,17 @@ class Int32Type(Type):
     def to_binary(self, value):
         return value.to_bytes(lenth=self.size, byteorder='little', signed=True)
 
+class UInt32Type(Type):
+    @property
+    def size(self):
+        return 4
+
+    def from_binary(self, binary):
+        return int.from_bytes(binary, byteorder='little', signed=False)
+
+    def to_binary(self, value):
+        return value.to_bytes(lenth=self.size, byteorder='little', signed=False)
+
 class Int64Type(Type):
     @property
     def size(self):
@@ -772,5 +783,8 @@ field_descriptors = {
         'player_2': FieldDescriptor(0x2a7b, "Player 2", EnumType(1, CharacterSelectedEnum)),
         'player_3': FieldDescriptor(0x2a7c, "Player 3", EnumType(1, CharacterSelectedEnum)),
         'player_4': FieldDescriptor(0x2a7d, "Player 4", EnumType(1, CharacterSelectedEnum)),
+    }),
+    'crc': Category('CRC32', {
+        'crc': FieldDescriptor(0x359a, 'CRC32', UInt32Type())
     }),
 }
