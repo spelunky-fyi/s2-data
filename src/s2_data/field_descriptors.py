@@ -4,26 +4,26 @@ import typing
 from .field_types import *
 
 class CharacterUnlockFlags(IntFlag):
-    Ana        = 0x1
-    Margaret   = 0x2
-    Colin      = 0x4
-    Roffy      = 0x8
-    Alto       = 0x10
-    Liz        = 0x20
-    Nekka      = 0x40
-    LISE       = 0x80
-    Coco       = 0x100
-    Manfred    = 0x200
-    Jay        = 0x400
-    Tina       = 0x800
-    Valerie    = 0x1000
-    Au         = 0x2000
-    Demi       = 0x4000
-    Pilot      = 0x8000
-    Airyn      = 0x10000
-    Dirk       = 0x20000
-    Guy        = 0x40000
-    ClassicGuy = 0x80000
+    Ana        = 1 << 0
+    Margaret   = 1 << 1
+    Colin      = 1 << 2
+    Roffy      = 1 << 3
+    Alto       = 1 << 4
+    Liz        = 1 << 5
+    Nekka      = 1 << 6
+    LISE       = 1 << 7
+    Coco       = 1 << 8
+    Manfred    = 1 << 9
+    Jay        = 1 << 10
+    Tina       = 1 << 11
+    Valerie    = 1 << 12
+    Au         = 1 << 13
+    Demi       = 1 << 14
+    Pilot      = 1 << 15
+    Airyn      = 1 << 16
+    Dirk       = 1 << 17
+    Guy        = 1 << 18
+    ClassicGuy = 1 << 19
 
 class ShortcutProgressEnum(IntEnum):
     NotMet = 0x0
