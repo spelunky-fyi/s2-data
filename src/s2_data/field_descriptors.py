@@ -271,7 +271,7 @@ field_descriptors = {
         'eggplant':          FieldDescriptor(0xb8, "Eggplant",          BoolType()),
         'cooked_turkey':     FieldDescriptor(0xb9, "Cooked Turkey",     BoolType()),
         'elixir':            FieldDescriptor(0xba, "Elixir",            BoolType()),
-        'four-leaf_clover':  FieldDescriptor(0xbb, "Four-Leaf Clover",  BoolType()),
+        'four_leaf_clover':  FieldDescriptor(0xbb, "Four-Leaf Clover",  BoolType()),
     }),
     'traps_discovered': Category('Journal: Traps Discovered', {
         'spikes':           FieldDescriptor(0xbc, "Spikes",           BoolType()),
