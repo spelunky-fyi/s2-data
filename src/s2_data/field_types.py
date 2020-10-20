@@ -36,7 +36,7 @@ class Int32Type(Type):
         return int.from_bytes(binary, byteorder='little', signed=True)
 
     def to_binary(self, value):
-        return value.to_bytes(lenth=self.size, byteorder='little', signed=True)
+        return value.to_bytes(length=self.size, byteorder='little', signed=True)
 
 class UInt32Type(Type):
     @property
@@ -47,7 +47,7 @@ class UInt32Type(Type):
         return int.from_bytes(binary, byteorder='little', signed=False)
 
     def to_binary(self, value):
-        return value.to_bytes(lenth=self.size, byteorder='little', signed=False)
+        return value.to_bytes(length=self.size, byteorder='little', signed=False)
 
 class Int64Type(Type):
     @property
@@ -58,7 +58,7 @@ class Int64Type(Type):
         return int.from_bytes(binary, byteorder='little', signed=True)
 
     def to_binary(self, value):
-        return value.to_bytes(lenth=self.size, byteorder='little', signed=True)
+        return value.to_bytes(length=self.size, byteorder='little', signed=True)
 
 class ByteType(Type):
     @property
@@ -105,4 +105,4 @@ class EnumType(Type):
         return self.enum_definition(int.from_bytes(binary, byteorder = 'little'))
 
     def to_binary(self, value):
-        return value.to_bytes(lenth = self.size, byteorder = 'little')
+        return value.to_bytes(length = self.size, byteorder = 'little')
