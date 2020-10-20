@@ -34,6 +34,23 @@ class DescriptorsTestCase(TestCase):
 
                 current = next_
 
+    def test_writing_current_value_is_noop(self):
+        """Converting a field's bytes to a value and back into bytes should
+        always succeed and the final bytes should be the same as the original
+        bytes."""
+        with open('../data/saves/mostly-full-savegame.sav', 'rb') as save_file:
+            save = save_file.read()
+
+            for category in s2_data.field_descriptors.values():
+                for field_descriptor in category.fields.values():
+                    with self.subTest(category=category.name, field=field_descriptor.name):
+                        field_start = field_descriptor.offset
+                        field_end = field_start + field_descriptor.type.size
+                        field_bytes = save[field_start:field_end]
+                        value = field_descriptor.type.from_binary(field_bytes)
+                        bytes_ = field_descriptor.type.to_binary(value)
+                        self.assertEqual(field_bytes, bytes_)
+
 
 if __name__ == '__main__':
     main()
