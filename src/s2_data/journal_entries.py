@@ -43,7 +43,7 @@ ENTRIES = {
             11, "Neo Babylon", "The capital city of the Olmites, a place of high technology, untold wonders, and endless stimulation.",
         ),
         Entry(
-            12, "Tiamat's Throne", "Where Queen Tiamat gave birth to the World. Now a seat of power from which she guids her unruly children.",
+            12, "Tiamat's Throne", "Where Queen Tiamat gave birth to the World. Now a seat of power from which she guides her unruly children.",
         ),
         Entry(
             13, "Sunken City", "In the bottom of the Well, the First City sleeps.",
@@ -52,7 +52,7 @@ ENTRIES = {
             14, "Eggplant World", "Once the palace of a mighty tyrant, now overgrown with peaceful eggplants.",
         ),
         Entry(
-            15, "Hundun's Hideaway", "At the lowest point of the Well is where the Greate Dreamer muddles about, always felt but never known.",
+            15, "Hundun's Hideaway", "At the lowest point of the Well is where the Great Dreamer muddles about, always felt but never known.",
         ),
         Entry(
             16, "Cosmic Ocean", "The roiling waters of creation that flow from Hundun's childish weeping. Here one may find the beginning and the end.",
@@ -75,7 +75,7 @@ ENTRIES = {
             5, "Alto Singh", "He works in physical education and wants to make sure everyone's taking good care of their health and staying positive.",
         ),
         Entry(
-            6, "Liz Mutton", "A tough-as-nails adventurer who is hard to warm up to and needs her solutude, but also cares deeply for her friends.",
+            6, "Liz Mutton", "A tough-as-nails adventurer who is hard to warm up to and needs her solitude, but also cares deeply for her friends.",
         ),
         Entry(
             7, "Nekka the Eagle", "A ferocious warrior chief who wants to confront the gods and question them about the problems of the universe.",
@@ -93,7 +93,7 @@ ENTRIES = {
             11, "Little Jay", "A self-proclaimed \"Spelunkyhead\" trying to become a famous explorer. Gets a little overly excited around his heroes.",
         ),
         Entry(
-            12, "Tina Flan", "As a relatively unkown caver she managed to hit King Yama with an eggplant. She tries to downplay her fame!",
+            12, "Tina Flan", "As a relatively unknown caver she managed to hit King Yama with an eggplant. She tries to downplay her fame!",
         ),
         Entry(
             13, "Valerie Crump", "An avid fan of music and video games. She's trying to find creative inspiration through travel.",
@@ -162,10 +162,10 @@ ENTRIES = {
             34, "Parsnip", "The middle child of three sisters. She loves parties and cats.",
         ),
         Entry(
-            35, "Parmesean", "The eldest of three sisters. She's shy and nurturing.",
+            35, "Parmesan", "The eldest of three sisters. She's shy and nurturing.",
         ),
         Entry(
-            36, "Sparrow", "Hailing from a prominent ninja family, she defied her parents and turned to theivery to challenge authority.",
+            36, "Sparrow", "Hailing from a prominent ninja family, she defied her parents and turned to thievery to challenge authority.",
         ),
         Entry(
             37, "Beg", "In his insecurity he was drawn to Hundun and embraced Chaos. Tun's brother.",
@@ -224,7 +224,7 @@ ENTRIES = {
             16, "Crown", "This royal headgear exudes an aura of unquestionable authority. It's much heavier than it looks!",
         ),
         Entry(
-            17, "Eggplant Crown", "The Eggplant King bequethed his crown to me. I feel at peace with my place in the universe.",
+            17, "Eggplant Crown", "The Eggplant King bequeathed his crown to me. I feel at peace with my place in the universe.",
         ),
         Entry(
             18, "The True Crown", "Also known as the cap and bells. A fitting crown for the followers of Hundun.",
@@ -236,13 +236,13 @@ ENTRIES = {
             20, "Tablet of Destiny", "A clay tablet on which many esoteric prophecies are written.",
         ),
         Entry(
-            21, "Skeleton Key", "The tool of theives. It opens any lock without breaking.",
+            21, "Skeleton Key", "The tool of thieves. It opens any lock without breaking.",
         ),
         Entry(
             22, "Royal Jelly", "A delicacy that's highly sought after for its refined taste and healing properties.",
         ),
         Entry(
-            23, "Cape", "This dashing fasion accessory can also be used to reduce one's speed while falling.",
+            23, "Cape", "This dashing fashion accessory can also be used to reduce one's speed while falling.",
         ),
         Entry(
             24, "Vlad's Cape", "The blood-red cape of Vlad the Impaler. It offers impressive mobility.",
@@ -370,19 +370,19 @@ ENTRIES = {
             10, "Tiki man", "A masked Jungle-dweller who hunts with a large boomerang.",
         ),
         Entry(
-            11, "Witch Docter", "A Tiki Tribe elder who practices black magic. They usee an effigy to attack intruders.",
+            11, "Witch Docter", "A Tiki Tribe elder who practices black magic. They use an effigy to attack intruders.",
         ),
         Entry(
             12, "Mosquito", "An annoying pest! Makes me mad just thinking about it.",
         ),
         Entry(
-            13, "Monkey", "A mischevious forest trickster. It simply can't get enough of its own unfunny pranks!",
+            13, "Monkey", "A mischievous forest trickster. It simply can't get enough of its own unfunny pranks!",
         ),
         Entry(
             14, "Hang Spider", "It could chase you if it had to but it'd rather not leave its web if possible.",
         ),
         Entry(
-            15, "Giant Spider", "A frightening arachnid the size of a car. She squirts sticket webs to ensnare her prey.",
+            15, "Giant Spider", "A frightening arachnid the size of a car. She squirts sticky webs to ensnare her prey.",
         ),
         Entry(
             16, "Magmar", "When an adventurer dies in lava, their spirit can become trapped inside the lava instead of going free.",
@@ -460,7 +460,7 @@ ENTRIES = {
             40, "Apep", "A great snake god who slithers tirelessly throughout Duat, with scales of flint and a stomach full of hot ash.",
         ),
         Entry(
-            41, "Anubis II", "Having been defeated at the Temple, Anubis returns to the underworld to beg foregiveness of his father, Osiris.",
+            41, "Anubis II", "Having been defeated at the Temple, Anubis returns to the underworld to beg forgiveness of his father, Osiris.",
         ),
         Entry(
             42, "Osiris", "The ruler of Duat and the ultimate judge of souls who make their way to him.",
@@ -526,7 +526,7 @@ ENTRIES = {
             62, "Celestial Jelly", "These mighty titan's roam the vast waters of the Cosmic Ocean, leaving behind them great ripples that alter time and space.",
         ),
         Entry(
-            63, "Scorpion", "Sometimes you brak open a pot and a nightmare comes out. This is that nightmare.",
+            63, "Scorpion", "Sometimes you break open a pot and a nightmare comes out. This is that nightmare.",
         ),
         Entry(
             64, "Bee", "An important part of the cave ecosystem. However, it's much larger and more aggressive than the common honeybee.",
@@ -595,7 +595,7 @@ ENTRIES = {
             6, "Thorny Trap", "The thorns of these thick vines aren't long enough to impale, but they're sharp enough to deliver a nasty poke.",
         ),
         Entry(
-            7, "Snap Trap", "The slightest pressure will cause its powerful steel jawas to snap shut, causing massive damage.",
+            7, "Snap Trap", "The slightest pressure will cause its powerful steel jaws to snap shut, causing massive damage.",
         ),
         Entry(
             8, "Powder Box", "A wooden box hastily filled with black powder. It will explode at the slightest provocation.",
@@ -610,7 +610,7 @@ ENTRIES = {
             11, "Lion Trap", "It's said that the Empress successfully deflected a barbarian horde using only these golden lions.",
         ),
         Entry(
-            12, "Giant Clam", "Over the years, the Empress's treasure has made its way to the ocean and into the mousth of these oversized molluscs.",
+            12, "Giant Clam", "Over the years, the Empress's treasure has made its way to the ocean and into the mouths of these oversized molluscs.",
         ),
         Entry(
             13, "Sliding Wall", "A door-like mechanism that is activated by a switch.",
