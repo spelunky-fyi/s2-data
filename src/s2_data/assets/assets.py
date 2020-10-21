@@ -1,3 +1,9 @@
+from struct import pack, unpack
+from PIL import Image
+import io
+
+from .chacha import Key, filename_hash, decrypt_data, encrypt_data
+
 KNOWN_ASSETS = [
     b"Data/Fonts/fontdebug.fnb",
     b"Data/Fonts/fontfirasans.fnb",
@@ -287,3 +293,150 @@ KNOWN_ASSETS = [
     b"strings06.str",
     b"strings07.str",
 ]
+
+
+class Asset(object):
+    def __init__(
+        self, name_hash, name_len, asset_len, encrypted, offset, data_offset, data_size
+    ):
+        self.name_hash = name_hash
+        self.name_len = name_len
+        self.asset_len = asset_len
+        self.encrypted = encrypted
+        self.offset = offset
+        self.data_offset = data_offset
+        self.data_size = data_size
+
+    @property
+    def total_size(self):
+        return 8 + self.name_len + self.data_size
+
+    def __repr__(self):
+        return "Asset(name_hash={}, encrypted={}, offset={}, data_size={})".format(
+            self.name_hash,
+            self.encrypted,
+            hex(self.offset),
+            self.data_size,
+        )
+
+    def match_hash(self, hash):
+        l = min(len(hash), self.name_len)
+        return hash[:l] == self.name_hash[:l]
+
+    def extract(self, filename, handle, key):
+        handle.seek(self.data_offset)
+        data = handle.read(self.data_size)
+        if self.encrypted:
+            try:
+                data = decrypt_data(filename, data, 11148743778869768807)
+            except Exception as exc:
+                print(exc)
+                return None
+
+        if filename.endswith(b".png"):
+            width, height = unpack(b"<II", data[:8])
+            image = Image.frombytes("RGBA", (width, height), data, "raw")
+            new_data = io.BytesIO()
+            image.save(new_data, format="PNG")
+            data = new_data.getvalue()
+
+        return data
+
+
+class AssetStore(object):
+    def __init__(self, exe_handle):
+        self.assets = []
+        self.exe_handle = exe_handle
+        self.key = Key()
+        self._load_assets()
+
+    def find_asset(self, filename):
+        name_hash = filename_hash(filename, self.key.key)
+        for asset in self.assets:
+            if asset.match_hash(name_hash):
+                return asset
+        return None
+
+    def pack_asset(self, filename, new_data):
+        asset = self.find_asset(filename)
+
+        if asset.encrypted:
+            size_raw = len(new_data)
+            new_data = encrypt_data(filename, new_data, self.key.key)
+            print(
+                'Encrypting data for "{}" ({} bytes -> {} bytes)'.format(
+                    filename, size_raw, len(new_data)
+                )
+            )
+
+        old_size = asset.data_size
+        new_size = len(new_data)
+
+        if new_size > old_size:
+            print(
+                'Asset "{}" is larger than original ({} bytes > {} bytes), replacing currently not possible'.format(
+                    filename, new_size, old_size
+                )
+            )
+            return False
+        elif new_size == old_size:
+            print(
+                'Replacing asset "{}" with same size ({} bytes)'.format(
+                    filename, new_size
+                )
+            )
+            self.exe_handle.seek(asset.data_offset)
+            self.exe_handle.write(new_data)
+        elif new_size < old_size:
+            print(
+                'Replacing asset "{}" with smaller size ({} bytes < {} bytes)'.format(
+                    filename, new_size, old_size
+                )
+            )
+            self.exe_handle.seek(asset.data_offset)
+            self.exe_handle.write(new_data)
+
+            diff = old_size - new_size
+            if diff < 10:
+                print(
+                    "Difference is less than 10 bytes, not enoguh space to insert a padding asset. Things might break"
+                )
+            else:
+                # Old/Replaced asset size
+                self.exe_handle.seek(asset.offset)
+                self.exe_handle.write(pack("<I", new_size + 1))
+                # New padding asset size (with name_len = 1)
+                self.exe_handle.seek(asset.data_offset + new_size)
+                self.exe_handle.write(pack("<II", diff - 9, 1))
+
+        return True
+
+    def _load_assets(self, offset=0x400):
+        self.exe_handle.seek(offset)
+
+        while True:
+            offset = self.exe_handle.tell()
+            asset_len, name_len = unpack(b"<II", self.exe_handle.read(8))
+            if (asset_len, name_len) == (0, 0):
+                break
+            assert asset_len > 0
+
+            name_hash = self.exe_handle.read(name_len)
+            encrypted = self.exe_handle.read(1) == b"\x01"
+            data_offset = self.exe_handle.tell()
+            data_size = asset_len - 1
+
+            self.exe_handle.seek(data_size, 1)
+            self.key.update(asset_len)
+
+            self.assets.append(
+                Asset(
+                    name_hash=name_hash,
+                    name_len=name_len,
+                    asset_len=asset_len,
+                    encrypted=encrypted,
+                    offset=offset,
+                    data_offset=data_offset,
+                    data_size=data_size,
+                )
+            )
