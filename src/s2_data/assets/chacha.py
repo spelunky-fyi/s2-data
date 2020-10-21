@@ -1,6 +1,10 @@
 from struct import pack, unpack
 import zstandard as zstd
 
+
+DEFAULT_COMPRESSION_LEVEL = 16
+
+
 def rotate_left(a, b):
     return ((((a) << (b)) | ((a) >> (32 - (b))))) & 0xFFFFFFFF
 
@@ -97,13 +101,14 @@ def filename_hash(s):
         h += sxor(partial, key[:len(partial)][::-1])
     return h
 
-def decrypt_data(s, data):
+
+def _chacha(name, data):
     # Untweaked key begins as half-advanced "0xBABE"
     h = two_rounds(pack(b'<QQQQQQQQ', 0xBABE, 0, 0, 0, 0, 0, 0, 0))
 
     # Mix the filename in to tweak the key
-    for i in range(0, len(s), 0x40):
-        partial = s[i:i+0x40]
+    for i in range(0, len(name), 0x40):
+        partial = name[i:i+0x40]
         h = quad_rounds(sxor(h[:len(partial)], partial[::-1]) + h[len(partial):])
 
     # Add the tweaked key and its advancement, then advance by four round pairs.
@@ -112,14 +117,24 @@ def decrypt_data(s, data):
     # NOTE: This appears to be an implementation mistake on the Spelunky 2 dev's part
     # They generate a quad_round advanced version of (nonce'd key), but then they
     # xor with the untweaked key instead of the tweaked key...
-    dec = b''
+    out = b''
     if len(data) >= 0x40:
         blocks = len(data) // 0x40
-        dec += sxor(data, key[::-1] * blocks)
+        out += sxor(data, key[::-1] * blocks)
         data = data[blocks * 0x40:]
     if len(data) > 0:
-        dec += sxor(data, key[:len(data)][::-1])
+        out += sxor(data, key[:len(data)][::-1])
 
+    return out
+
+def decrypt_data(name, data):
+    data = _chacha(name, data)
     cctx = zstd.ZstdDecompressor()
-    decompressed = cctx.decompress(dec)
-    return decompressed
+    data = cctx.decompress(data)
+    return data
+
+
+def encrypt_data(name, data, compression_level=DEFAULT_COMPRESSION_LEVEL):
+    cctx = zstd.ZstdCompressor(level=compression_level)
+    data = cctx.compress(data)
+    return _chacha(name, data)

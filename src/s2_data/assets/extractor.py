@@ -1,10 +1,14 @@
 from struct import pack, unpack
 from PIL import Image
 import io
+import os
+import os.path
 
 from .chacha import decrypt_data, filename_hash
 from .assets import KNOWN_ASSETS
 
+
+EXTRACT_DIR = b"extracted"
 
 class AssetDetails(object):
     def __init__(self, filename, hashed_name, encrypted, offset, size):
@@ -23,10 +27,14 @@ class AssetDetails(object):
         handle.seek(self.offset)
         data = handle.read(self.size)
         if self.encrypted:
-            data = decrypt_data(self.filename, data)
+            try:
+                data = decrypt_data(self.filename, data)
+            except Exception as exc:
+                print(exc)
+                return None
 
         if self.filename.endswith(b".png"):
-            width, height = unpack('<II', data[:8])
+            width, height = unpack(b'<II', data[:8])
             image = Image.frombytes('RGBA', (width, height), data, 'raw')
             new_data = io.BytesIO()
             image.save(new_data, format="PNG")
@@ -60,7 +68,7 @@ class Extractor(object):
         self.exe_handle.seek(offset)
 
         while True:
-            asset_len, name_len = unpack('<II', self.exe_handle.read(8))
+            asset_len, name_len = unpack(b'<II', self.exe_handle.read(8))
             if (asset_len, name_len) == (0, 0):
                 break
             assert asset_len > 0
@@ -89,16 +97,31 @@ class Extractor(object):
 
 
 def main():
-    import sys
+    import argparse
 
-    if len(sys.argv) < 4:
-        print("./s2-asset-extract path/to/bin asset-name dest-name")
+    parser = argparse.ArgumentParser(description='Extract Spelunky 2 Assets.')
 
-    with open(sys.argv[1], 'rb') as exe:
-        extractor = Extractor(exe)
-        assets = {}
-        for asset_details in extractor.extract_asset_details():
-            assets[asset_details.filename] = asset_details
+    parser.add_argument(
+        'exe', type=argparse.FileType('rb'),
+        help="Path to Spel2.exe"
+    )
+    args = parser.parse_args()
 
-        with open(sys.argv[3], "wb") as f:
-            f.write(assets[sys.argv[2].encode()].extract(exe))
+    extractor = Extractor(args.exe)
+    for asset in extractor.extract_asset_details():
+        dest_path = os.path.join(EXTRACT_DIR, asset.filename)
+        dirname = os.path.dirname(dest_path)
+        if dirname != "" and not os.path.exists(dirname):
+            os.makedirs(dirname)
+
+        if os.path.exists(dest_path):
+            print("{} alread exists. Skipping... ".format(asset.filename.decode()))
+            continue
+
+        print("Extracting {}... ".format(asset.filename.decode()), end="")
+        data = asset.extract(args.exe)
+        if not data:
+            continue
+        with open(dest_path, "wb") as f:
+            f.write(data)
+        print("Done!")
