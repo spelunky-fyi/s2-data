@@ -1,11 +1,14 @@
-from unittest import TestCase, main
 import s2_data
 import re
+import os
+from unittest import TestCase, main
 from itertools import chain
 
 
 dict_key_regex = re.compile('^[a-z][a-z0-9_]*$')
-
+save_game_path = os.path.join(
+    os.path.dirname(__file__),
+    '../../data/saves/mostly-full-savegame.sav')
 
 class DescriptorsTestCase(TestCase):
 
@@ -38,7 +41,7 @@ class DescriptorsTestCase(TestCase):
         """Converting a field's bytes to a value and back into bytes should
         always succeed and the final bytes should be the same as the original
         bytes."""
-        with open('../data/saves/mostly-full-savegame.sav', 'rb') as save_file:
+        with open(save_game_path, 'rb') as save_file:
             save = save_file.read()
 
             for category in s2_data.field_descriptors.values():
