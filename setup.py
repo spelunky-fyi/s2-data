@@ -46,6 +46,8 @@ setup(
     # For an analysis of "install_requires" vs pip's requirements files see:
     # https://packaging.python.org/en/latest/requirements.html
     install_requires=[
+        "zstandard",
+        "Pillow",
     ],
 
     # List additional groups of dependencies here (e.g. development
@@ -70,7 +72,8 @@ setup(
     # executes the function `main` from this package when invoked:
     entry_points={  # Optional
         'console_scripts': [
-            's2save-to-text=s2_data.command_line:to_text'
+            's2save-to-text=s2_data.command_line:to_text',
+            's2-asset-extract=s2_data.assets.extractor:main',
         ],
     },
     include_package_data = True,
