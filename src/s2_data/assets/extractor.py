@@ -4,19 +4,20 @@ import io
 import os
 import os.path
 
-from .chacha import decrypt_data, filename_hash
+from .chacha import decrypt_data, filename_hash, rotate_left
 from .assets import KNOWN_ASSETS
 
 
 EXTRACT_DIR = b"extracted"
 
 class AssetDetails(object):
-    def __init__(self, filename, hashed_name, encrypted, offset, size):
+    def __init__(self, filename, hashed_name, encrypted, offset, size, key):
         self.filename = filename
         self.hashed_name = hashed_name
         self.encrypted = encrypted
         self.offset = offset
         self.size = size
+        self.key = key
 
     def __repr__(self):
         return "AssetDetails(filename={}, encrypted={}, offset={}, size={})".format(
@@ -28,7 +29,7 @@ class AssetDetails(object):
         data = handle.read(self.size)
         if self.encrypted:
             try:
-                data = decrypt_data(self.filename, data)
+                data = decrypt_data(self.filename, data, self.key)
             except Exception as exc:
                 print(exc)
                 return None
@@ -44,12 +45,14 @@ class AssetDetails(object):
 
 
 class Extractor(object):
-    def __init__(self, exe_handle):
+    def __init__(self, exe_handle, offset=0x400):
         self.exe_handle = exe_handle
+        self.offset = offset
+        self.key = self.calculate_key()
 
         self.asset_hashes = {}
         for asset in KNOWN_ASSETS:
-            self.asset_hashes[filename_hash(asset)] = asset
+            self.asset_hashes[filename_hash(asset, self.key)] = asset
 
     def get_filename(self, hashed_name):
         filename = self.asset_hashes.get(hashed_name)
@@ -63,6 +66,23 @@ class Extractor(object):
                 return self.asset_hashes[key]
 
         return None
+
+    def calculate_key(self):
+        self.exe_handle.seek(self.offset)
+        key = 0
+        mask = 2 ** 64 - 1
+        while True:
+            asset_len, name_len = unpack(b'<II', self.exe_handle.read(8))
+            if (asset_len, name_len) == (0, 0):
+                break
+            assert asset_len > 0
+
+            self.exe_handle.seek(name_len + asset_len, 1)
+
+            v3 = 0x9E6C63D0676A9A99 * (key ^ asset_len ^ rotate_left(key ^ asset_len, 17, 64) ^ rotate_left(key ^ asset_len, 64 - 25, 64)) & mask
+            v4 = 0x9E6D62D06F6A9A9B * (v3 ^ ((v3 ^ (v3 >> 28)) >> 23)) & mask
+            key ^= v4 ^ ((v4 ^ (v4 >> 28)) >> 23)
+        return key
 
     def extract_asset_details(self, offset=0x400):
         self.exe_handle.seek(offset)
@@ -93,6 +113,7 @@ class Extractor(object):
                 encrypted=encrypted,
                 offset=offset,
                 size=size,
+                key=self.key,
             )
 
 

@@ -5,8 +5,9 @@ import zstandard as zstd
 DEFAULT_COMPRESSION_LEVEL = 16
 
 
-def rotate_left(a, b):
-    return ((((a) << (b)) | ((a) >> (32 - (b))))) & 0xFFFFFFFF
+def rotate_left(a, b, bits=32):
+    a &= (1 << bits) - 1
+    return ((((a) << (b)) | ((a) >> (bits - (b))))) & ((1 << bits) - 1)
 
 def quarter_round(w, a, b, c, d):
     w[a] += w[b]
@@ -82,14 +83,15 @@ def mix_in(h, s):
 
     return h
 
-def filename_hash(s):
+def filename_hash(s, key):
     # Generate initial hash from the string
-    h0 = mix_in(b'\x00'*0x40, s)
+    h = two_rounds(pack(b'<QQQQQQQQ', key, len(s), 0, 0, 0, 0, 0, 0))
+    h = mix_in(h, s)
 
-    # Advance h0 by four round pairs to get h1
-    h1 = quad_rounds(h0)
     # Add the two together, and advance by four round pairs.
-    key = quad_rounds(add_qwords(h0, h1))
+    tmp = add_qwords(h, quad_rounds(h))
+    tmp = s_to_q(tmp)
+    key = quad_rounds(q_to_s([tmp[0] ^ len(s)] + tmp[1:]))
 
     # Do keyed hashing
     # NOTE: This appears to be an implementation mistake on the Spelunky 2 dev's part
@@ -102,9 +104,9 @@ def filename_hash(s):
     return h
 
 
-def _chacha(name, data):
-    # Untweaked key begins as half-advanced "0xBABE"
-    h = two_rounds(pack(b'<QQQQQQQQ', 0xBABE, 0, 0, 0, 0, 0, 0, 0))
+def _chacha(name, data, key):
+    # Untweaked key begins as half-advanced `key`
+    h = two_rounds(pack(b'<QQQQQQQQ', key, len(name), 0, 0, 0, 0, 0, 0))
 
     # Mix the filename in to tweak the key
     for i in range(0, len(name), 0x40):
@@ -112,7 +114,9 @@ def _chacha(name, data):
         h = quad_rounds(sxor(h[:len(partial)], partial[::-1]) + h[len(partial):])
 
     # Add the tweaked key and its advancement, then advance by four round pairs.
-    key = quad_rounds(add_qwords(h, quad_rounds(h)))
+    tmp = add_qwords(h, quad_rounds(h))
+    tmp = s_to_q(tmp)
+    key = quad_rounds(q_to_s([tmp[0] ^ key + len(data)] + tmp[1:]))
 
     # NOTE: This appears to be an implementation mistake on the Spelunky 2 dev's part
     # They generate a quad_round advanced version of (nonce'd key), but then they
@@ -127,14 +131,14 @@ def _chacha(name, data):
 
     return out
 
-def decrypt_data(name, data):
-    data = _chacha(name, data)
+def decrypt_data(name, data, key=0xBABE):
+    data = _chacha(name, data, key)
     cctx = zstd.ZstdDecompressor()
     data = cctx.decompress(data)
     return data
 
 
-def encrypt_data(name, data, compression_level=DEFAULT_COMPRESSION_LEVEL):
+def encrypt_data(name, data, key=0xBABE, compression_level=DEFAULT_COMPRESSION_LEVEL):
     cctx = zstd.ZstdCompressor(level=compression_level)
     data = cctx.compress(data)
-    return _chacha(name, data)
+    return _chacha(name, data, key)
