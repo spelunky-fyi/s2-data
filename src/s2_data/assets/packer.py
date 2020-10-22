@@ -1,6 +1,5 @@
-import zstandard as zstd
 from PIL import Image
-from struct import pack, unpack
+from struct import pack
 import os
 
 from .assets import AssetStore

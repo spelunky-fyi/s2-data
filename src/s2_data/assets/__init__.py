@@ -22,4 +22,3 @@ https://gist.github.com/Cloppershy/046846e593362a2a7284c28f39899eae
 Additionally, `iojonmbnmb#8149 ` provided the updated hashing code when
 it was broken in 1.13.0
 """
-

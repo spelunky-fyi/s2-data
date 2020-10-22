@@ -275,6 +275,7 @@ KNOWN_ASSETS = [
     b"Data/Textures/noise0.png",
     b"Data/Textures/noise1.png",
     b"Data/Textures/OldTextures/ai.png",
+    b"Data/Textures/placeholder",
     b"Data/Textures/saving.png",
     b"Data/Textures/shadows.png",
     b"Data/Textures/shine.png",
@@ -312,10 +313,18 @@ class Asset(object):
         return 8 + self.name_len + self.data_size
 
     def __repr__(self):
-        return "Asset(name_hash={}, encrypted={}, offset={}, data_size={})".format(
+        return (
+            "Asset("
+            "name_hash={!r}, name_len={!r}, asset_len={!r}, encrypted={!r}, "
+            "offset={}, data_offset={}, data_size={!r}"
+            ")"
+        ).format(
             self.name_hash,
+            self.name_len,
+            self.asset_len,
             self.encrypted,
             hex(self.offset),
+            hex(self.data_offset),
             self.data_size,
         )
 
@@ -328,7 +337,7 @@ class Asset(object):
         data = handle.read(self.data_size)
         if self.encrypted:
             try:
-                data = decrypt_data(filename, data, 11148743778869768807)
+                data = decrypt_data(filename, data, key)
             except Exception as exc:
                 print(exc)
                 return None
