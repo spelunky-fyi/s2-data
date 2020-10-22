@@ -74,6 +74,7 @@ setup(
         'console_scripts': [
             's2save-to-text=s2_data.command_line:to_text',
             's2-asset-extract=s2_data.assets.extractor:main',
+            's2-asset-pack=s2_data.assets.packer:main',
         ],
     },
     include_package_data = True,
