@@ -1,5 +1,6 @@
 from struct import pack, unpack
 from PIL import Image
+import binascii
 import io
 
 from .chacha import Key, filename_hash, decrypt_data, encrypt_data
@@ -307,6 +308,7 @@ class Asset(object):
         self.offset = offset
         self.data_offset = data_offset
         self.data_size = data_size
+        self.filename = None
 
     @property
     def total_size(self):
@@ -315,12 +317,13 @@ class Asset(object):
     def __repr__(self):
         return (
             "Asset("
-            "name_hash={!r}, name_len={!r}, asset_len={!r}, encrypted={!r}, "
+            "name_hash={!r}, name_len={!r}, filename={!r}, asset_len={!r}, encrypted={!r}, "
             "offset={}, data_offset={}, data_size={!r}"
             ")"
         ).format(
-            self.name_hash,
+            binascii.hexlify(self.name_hash),
             self.name_len,
+            self.filename,
             self.asset_len,
             self.encrypted,
             hex(self.offset),
@@ -356,22 +359,40 @@ class AssetStore(object):
     def __init__(self, exe_handle):
         self.assets = []
         self.exe_handle = exe_handle
-        self.key = Key()
+        self.total_size = 0
+        self._key = Key()
         self._load_assets()
 
+    @property
+    def key(self):
+        return self._key.key
+
+    def recalculate_key(self):
+        new_key = Key()
+        for asset in self.assets:
+            new_key.update(asset.asset_len)
+        self._key = new_key
+
     def find_asset(self, filename):
-        name_hash = filename_hash(filename, self.key.key)
+        if filename is None:
+            return None
+        name_hash = filename_hash(filename, self.key)
         for asset in self.assets:
             if asset.match_hash(name_hash):
                 return asset
         return None
+
+    def filename_hash(self, filename):
+        if filename is None:
+            return None
+        return filename_hash(filename, self.key)
 
     def pack_asset(self, filename, new_data):
         asset = self.find_asset(filename)
 
         if asset.encrypted:
             size_raw = len(new_data)
-            new_data = encrypt_data(filename, new_data, self.key.key)
+            new_data = encrypt_data(filename, new_data, self.key)
             print(
                 'Encrypting data for "{}" ({} bytes -> {} bytes)'.format(
                     filename, size_raw, len(new_data)
@@ -436,7 +457,7 @@ class AssetStore(object):
             data_size = asset_len - 1
 
             self.exe_handle.seek(data_size, 1)
-            self.key.update(asset_len)
+            self._key.update(asset_len)
 
             self.assets.append(
                 Asset(
@@ -449,3 +470,4 @@ class AssetStore(object):
                     data_size=data_size,
                 )
             )
+            self.total_size += (asset_len + data_offset) - offset

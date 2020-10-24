@@ -1,7 +1,7 @@
+import binascii
 import os.path
 
 from .assets import KNOWN_ASSETS, AssetStore
-from .chacha import filename_hash
 
 EXTRACT_DIR = b"Extracted"
 
@@ -23,11 +23,16 @@ def main():
 
     for idx, filename in enumerate(KNOWN_ASSETS):
         asset = asset_store.find_asset(filename)
+        name_hash = asset_store.filename_hash(filename)
         if asset is None:
-            print("Asset {} not found with hash {}...".format(filename.decode(), repr(filename_hash(filename, asset_store.key.key))))
+            print("Asset {} not found with hash {!r}...".format(
+                filename.decode(),
+                binascii.hexlify(name_hash)
+            ))
             continue
 
-        seen[asset.name_hash] = (filename, asset)
+        asset.filename = filename
+        seen[asset.name_hash] = asset
 
         dest_path = os.path.join(EXTRACT_DIR, filename)
         dirname = os.path.dirname(dest_path)
@@ -39,7 +44,7 @@ def main():
             continue
 
         print("Extracting {}... ".format(filename.decode()), end="")
-        data = asset.extract(filename, args.exe, asset_store.key.key)
+        data = asset.extract(filename, args.exe, asset_store.key)
         if not data:
             continue
         with open(dest_path, "wb") as f:
@@ -47,9 +52,6 @@ def main():
         print("Done!")
 
     for idx, asset in enumerate(sorted(asset_store.assets, key=lambda a: a.offset)):
-#        #print(seen.get(asset.name_hash, (None, None)))
+        name_hash = asset_store.filename_hash(asset.filename)
         if asset.name_hash not in seen:
             print("Un-extracted Asset", asset)
-#            print("Before:", seen.get(asset_store.assets[idx-1].name_hash))
-#            print("After:", seen.get(asset_store.assets[idx+1].name_hash))
-#            print("")
