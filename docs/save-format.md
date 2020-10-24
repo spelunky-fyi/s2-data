@@ -15,7 +15,6 @@ https://mossranking.com/discord
 
  - [ ] Constellations
  - [ ] Last Played
-   - [ ] Stickers
    - [ ] Last Played Character
  - [ ] Format Raw Data
 
@@ -751,6 +750,108 @@ Tracks whether you ever viewed the player profile. Used to determine if it shoul
 2907: byte - Level
 290a: int  - Money
 290e: time - Time
+```
+
+## Stickers
+
+Here the stickers are numbered in the order that they appear in the save file,
+but in game they are listed from the middle outwards. The first sticker is
+placed in the middle, the second to the left of the first, the third sticker
+appears to the right of the first, fourth is placed further to the left of the
+first, etc..
+
+```
+0x2912: int - Sticker 1
+0x2916: int - Sticker 2
+0x291a: int - Sticker 3
+0x291e: int - Sticker 4
+0x2922: int - Sticker 5
+0x2926: int - Sticker 6
+0x292a: int - Sticker 7
+0x292e: int - Sticker 8
+0x2932: int - Sticker 9
+```
+
+Values in the range of 0-3fb have been tried out and documented, any value
+within this range not listed below causes a 'rainbow' square to appear in the
+spot a sticker would normally be in.
+
+When Spelunky 2 sees NoSticker it will ignore any following sticker value.
+
+Here's the list of values:
+
+```
+0x00 - NoSticker
+
+0xc1 - Ana
+0xc2 - Margaret
+0xc3 - Colin
+0xc4 - Roffy
+0xc5 - Alto
+0xc6 - Liz
+0xc7 - Nekka
+0xc8 - LISE
+0xc9 - Coco
+0xca - Manfred
+0xcb - Jay
+0xcc - Tina
+0xcd - Valerie
+0xce - Au
+0xcf - Demi
+0xd0 - Pilot
+0xd1 - Airyn
+0xd2 - Dirk
+0xd3 - Guy
+0xd4 - ClassicGuy
+
+0xe1 - Caveman
+0xe7 - Quillback
+0xf5 - Vlad
+0xfc - Anubis
+0x100 - Osiris
+0x10e - AlienQueen
+0x118 - Kingu
+0x119 - Tiamat
+0x122 - EggplantKing
+0x123 - Hundun
+0x127 - Shopkeeper
+0x128 - Tun
+0x129 - Yang
+0x12b - Parsley
+0x12c - Parsnip
+0x12d - Parmesan
+0x12e - VanHorsing
+0x12f - Sparrow
+
+0x163 - Idol
+
+0x216 - Paste
+0x217 - ClimbingGloves
+0x218 - SpikeShoes
+0x219 - SpringShoes
+0x21a - Kapala
+0x21b - Spectacles
+0x21c - PitchersMitt
+0x21d - UdjatEye
+0x21e - Parachute
+0x21f - Compass
+0x220 - AlienCompass
+0x221 - Hedjet
+0x222 - Crown
+0x223 - EggplantCrown
+0x224 - TrueCrown
+0x225 - Ankh
+0x226 - TabletOfDestiny
+0x227 - SkeletonKey
+
+0x229 - Cape
+0x22a - VladsCape
+0x22c - Jetpack
+0x22f - Telepack
+0x231 - Hoverpack
+0x233 - Powerpack
+
+0x25a - Olmec
 ```
 
 ## Player - Character Selection

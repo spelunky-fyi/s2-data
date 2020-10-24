@@ -60,6 +60,81 @@ class CharacterSelectedEnum(IntEnum):
     Guy        = 0x12
     ClassicGuy = 0x13
 
+class StickerEnum(IntEnum):
+    NoSticker = 0x00
+
+    Ana        = 0xc1
+    Margaret   = 0xc2
+    Colin      = 0xc3
+    Roffy      = 0xc4
+    Alto       = 0xc5
+    Liz        = 0xc6
+    Nekka      = 0xc7
+    LISE       = 0xc8
+    Coco       = 0xc9
+    Manfred    = 0xca
+    Jay        = 0xcb
+    Tina       = 0xcc
+    Valerie    = 0xcd
+    Au         = 0xce
+    Demi       = 0xcf
+    Pilot      = 0xd0
+    Airyn      = 0xd1
+    Dirk       = 0xd2
+    Guy        = 0xd3
+    ClassicGuy = 0xd4
+
+    Caveman      = 0xe1
+    Quillback    = 0xe7
+    Vlad         = 0xf5
+    Anubis       = 0xfc
+    Osiris       = 0x100
+    AlienQueen   = 0x10e
+    Kingu        = 0x118
+    Tiamat       = 0x119
+    EggplantKing = 0x122
+    Hundun       = 0x123
+    Shopkeeper   = 0x127
+    Tun          = 0x128
+    Yang         = 0x129
+    Parsley      = 0x12b
+    Parsnip      = 0x12c
+    Parmesan     = 0x12d
+    VanHorsing   = 0x12e
+    Sparrow      = 0x12f
+
+    Idol = 0x163
+
+    Paste           = 0x216
+    ClimbingGloves  = 0x217
+    SpikeShoes      = 0x218
+    SpringShoes     = 0x219
+    Kapala          = 0x21a
+    Spectacles      = 0x21b
+    PitchersMitt    = 0x21c
+    UdjatEye        = 0x21d
+    Parachute       = 0x21e
+    Compass         = 0x21f
+    AlienCompass    = 0x220
+    Hedjet          = 0x221
+    Crown           = 0x222
+    EggplantCrown   = 0x223
+    TrueCrown       = 0x224
+    Ankh            = 0x225
+    TabletOfDestiny = 0x226
+    SkeletonKey     = 0x227
+
+    Cape      = 0x229
+    VladsCape = 0x22a
+    Jetpack   = 0x22c
+    Telepack  = 0x22f
+    Hoverpack = 0x231
+    Powerpack = 0x233
+
+    Olmec = 0x25a
+
+StickerType = EnumType(4, StickerEnum)
+
 @dataclass(frozen = True)
 class FieldDescriptor:
     offset: int
@@ -672,6 +747,17 @@ field_descriptors = {
         'level': FieldDescriptor(0x2907, 'Level', ByteType()),
         'money': FieldDescriptor(0x290a, 'Money', Int32Type()),
         'time':  FieldDescriptor(0x290e, 'Time',  Int32Type()),
+    }),
+    'stickers': Category('Stickers', {
+        'sticker_1': FieldDescriptor(0x2912, 'Sticker 1', StickerType),
+        'sticker_2': FieldDescriptor(0x2916, 'Sticker 2', StickerType),
+        'sticker_3': FieldDescriptor(0x291a, 'Sticker 3', StickerType),
+        'sticker_4': FieldDescriptor(0x291e, 'Sticker 4', StickerType),
+        'sticker_5': FieldDescriptor(0x2922, 'Sticker 5', StickerType),
+        'sticker_6': FieldDescriptor(0x2926, 'Sticker 6', StickerType),
+        'sticker_7': FieldDescriptor(0x292a, 'Sticker 7', StickerType),
+        'sticker_8': FieldDescriptor(0x292e, 'Sticker 8', StickerType),
+        'sticker_9': FieldDescriptor(0x2932, 'Sticker 9', StickerType),
     }),
     'character_selected': Category('Player - Character Selection', {
         'player_1': FieldDescriptor(0x2a7a, "Player 1", EnumType(1, CharacterSelectedEnum)),
