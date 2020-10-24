@@ -344,7 +344,7 @@ class Asset(object):
 
         if filename.endswith(b".png"):
             width, height = unpack(b"<II", data[:8])
-            image = Image.frombytes("RGBA", (width, height), data, "raw")
+            image = Image.frombytes("RGBA", (width, height), data[8:], "raw")
             new_data = io.BytesIO()
             image.save(new_data, format="PNG")
             data = new_data.getvalue()
