@@ -1,9 +1,17 @@
 import binascii
-import os.path
+from pathlib import Path
 
-from .assets import KNOWN_ASSETS, AssetStore
+from .assets import KNOWN_ASSETS, AssetStore, EXTRACTED_DIR, OVERRIDES_DIR
 
-EXTRACT_DIR = b"Extracted"
+DEFAULT_DIR = Path("Mods")
+EXTRACTED_DIR = DEFAULT_DIR / EXTRACTED_DIR
+OVERRIDES_DIR = DEFAULT_DIR / OVERRIDES_DIR
+
+DIRS = [
+    "Data/Fonts",
+    "Data/Levels/Arena",
+    "Data/Textures/OldTextures"
+]
 
 
 def main():
@@ -21,6 +29,14 @@ def main():
     asset_store = AssetStore.load_from_file(args.exe)
     seen = {}
 
+    # Make all directories for extraction and overrides
+    for dir_ in DIRS:
+        (EXTRACTED_DIR / dir_).mkdir(parents=True, exist_ok=True)
+        (EXTRACTED_DIR / ".compressed" / dir_).mkdir(parents=True, exist_ok=True)
+        (OVERRIDES_DIR / dir_).mkdir(parents=True, exist_ok=True)
+        (OVERRIDES_DIR / ".compressed" / dir_).mkdir(parents=True, exist_ok=True)
+
+
     for filename in KNOWN_ASSETS:
         asset = asset_store.find_asset(filename)
         name_hash = asset_store.filename_hash(filename)
@@ -34,22 +50,9 @@ def main():
         asset.filename = filename
         seen[asset.name_hash] = asset
 
-        dest_path = os.path.join(EXTRACT_DIR, filename)
-        dirname = os.path.dirname(dest_path)
-        if dirname != "" and not os.path.exists(dirname):
-            os.makedirs(dirname)
-
-        if args.lazy and os.path.exists(dest_path):
-            print("{} already exists. Skipping... ".format(filename.decode()))
-            continue
-
-        print("Extracting {}... ".format(filename.decode()), end="")
-        data = asset.extract(filename, args.exe, asset_store.key)
-        if not data:
-            continue
-        with open(dest_path, "wb") as f:
-            f.write(data)
-        print("Done!")
+        print("Extracting {}... ".format(Path(filename.decode())))
+        asset.extract(EXTRACTED_DIR, args.exe, asset_store.key)
+        print("")
 
     for asset in sorted(asset_store.assets, key=lambda a: a.offset):
         name_hash = asset_store.filename_hash(asset.filename)

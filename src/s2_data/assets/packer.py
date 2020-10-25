@@ -1,6 +1,7 @@
 from PIL import Image
 from struct import pack
 import os
+from pathlib import Path
 
 from .assets import AssetStore
 from .patcher import Patcher
@@ -14,9 +15,9 @@ def main():
     parser = argparse.ArgumentParser(description="Extract Spelunky 2 Assets.")
 
     parser.add_argument(
-        "--asset-dir",
+        "--mods-dir",
         type=str,
-        default="Extracted",
+        default="Mods",
         help="Path to directory containing mods.",
     )
     parser.add_argument(
@@ -52,16 +53,10 @@ def main():
     print(f"Making copy of {args.source.name} to {args.dest}")
     shutil.copy2(args.source.name, args.dest)
 
-    source_asset_store = AssetStore.load_from_file(args.source)
     with open(args.dest, "rb+") as dest_file:
+        asset_store = AssetStore.load_from_file(dest_file)
+        asset_store.repackage(Path(args.mods_dir), args.compression_level)
 
-        dest_asset_store = AssetStore.load_from_directory(args.asset_dir, dest_file)
-
-        if dest_asset_store.total_size > source_asset_store.total_size:
-            print("New asset bundle larger than previous... Failing.")
-            sys.exit(1)
-
-        dest_asset_store.pack_assets(args.asset_dir)
         patcher = Patcher(dest_file)
         patcher.patch()
 

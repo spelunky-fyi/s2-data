@@ -2,28 +2,34 @@ from struct import pack, unpack
 from PIL import Image
 import binascii
 import io
-import os.path
+import os
+import hashlib
+from pathlib import Path
 import zstandard as zstd
+from dataclasses import dataclass
 
 from .chacha import Key, filename_hash, chacha
 from .known_assets import KNOWN_ASSETS
 
-UNENCRYPTED_ASSETS = set([
-    "soundbank.bank", "soundbank.strings.bank",
-])
+EXTRACTED_DIR = Path("Extracted")
+OVERRIDES_DIR = Path("Overrides")
+DEFAULT_COMPRESSION_LEVEL = 20
+
 
 class Asset(object):
     def __init__(
-        self, name_hash, name_len, filename, asset_len, encrypted, offset, data_offset, data_size
+        self, name_hash, name_len, filename, asset_data, asset_len, encrypted, offset, data_offset, data_size
     ):
         self.name_hash = name_hash
         self.name_len = name_len
         self.filename = filename
+        self.asset_data = asset_data
         self.asset_len = asset_len
         self.encrypted = encrypted
         self.offset = offset
         self.data_offset = data_offset
         self.data_size = data_size
+        self.asset_data = asset_data
 
     @property
     def total_size(self):
@@ -50,26 +56,55 @@ class Asset(object):
         l = min(len(hash), self.name_len)
         return hash[:l] == self.name_hash[:l]
 
-    def extract(self, filename, handle, key):
+    def extract(self, dest_path, handle, key, compression_level=DEFAULT_COMPRESSION_LEVEL):
+
+        self.path = dest_path
+        compressed_path = dest_path / ".compressed"
+        filepath = self.path / self.filename.decode()
+        compressed_filepath = compressed_path / f"{self.filename.decode()}.zst"
+        md5sum_filepath = compressed_path / f"{self.filename.decode()}.md5sum"
+        
         handle.seek(self.data_offset)
         data = handle.read(self.data_size)
+
         if self.encrypted:
             try:
-                data = chacha(filename, data, key)
+                # Decrypt
+                data = chacha(self.filename, data, key)
+
+                # Decompress
                 cctx = zstd.ZstdDecompressor()
-                data = cctx.decompress(data)
+                data = cctx.decompress(data)          
+
+                # Recompress at higher compression level to give
+                # better chance of assets fitting in binary
+                print(f"Storing compressed asset {compressed_filepath}...")
+                with compressed_filepath.open("wb") as compressed_file:
+                    cctx = zstd.ZstdCompressor(level=compression_level)
+                    compressed_data = cctx.compress(data)
+                    compressed_file.write(compressed_data)
+
             except Exception as exc:
                 print(exc)
                 return None
 
-        if filename.endswith(b".png"):
+
+        if filepath.suffix == ".png":
             width, height = unpack(b"<II", data[:8])
             image = Image.frombytes("RGBA", (width, height), data[8:], "raw")
             new_data = io.BytesIO()
             image.save(new_data, format="PNG")
             data = new_data.getvalue()
 
-        return data
+        # Get a hash of the the uncompressed file to be used
+        # to detect if the source file changed
+        md5sum = hashlib.md5(data).hexdigest()
+        with md5sum_filepath.open("w") as md5sum_file:
+            md5sum_file.write(md5sum)
+
+        print(f"Storing asset {filepath}...")
+        with filepath.open("wb") as asset_file:
+            asset_file.write(data)
 
 
 class AssetStore(object):
@@ -89,6 +124,8 @@ class AssetStore(object):
     def recalculate_key(self):
         new_key = Key()
         for asset in self.assets:
+            if asset.filename is None:
+                continue
             new_key.update(asset.asset_len)
         self._key = new_key
 
@@ -112,24 +149,21 @@ class AssetStore(object):
             return None
         return filename_hash(filename, self.key)
 
-    def pack_assets(self, asset_dir):
+    def pack_assets(self):
         self.exe_handle.seek(self.DATA_OFFSET)
 
         for asset in self.assets:
-            asset_path = os.path.join(asset_dir.encode(), asset.filename)
+            if asset.filename is None:
+                continue
+          
+            assert asset.data_size == asset.asset_data.get_data_size()
+            data = asset.asset_data.get_data()
 
             if asset.encrypted:
-                asset_path += b".zst"
-
-            data_size = os.path.getsize(asset_path)
-            assert data_size == asset.data_size
-
-            with open(asset_path, "rb") as asset_datefile:
-                data = asset_datefile.read()
-
-            if asset.encrypted:
+                print(f"Encrypting file {asset.asset_data.filename}")
                 data = chacha(asset.filename, data, self.key)
 
+            print(f"Packing file {asset.asset_data.filename}")
             self.exe_handle.write(pack("<II", asset.asset_len, asset.name_len))
             self.exe_handle.write(asset.name_hash)
             self.exe_handle.write(pack("<b", asset.encrypted))
@@ -162,6 +196,7 @@ class AssetStore(object):
                 name_hash=name_hash,
                 name_len=name_len,
                 filename=None,
+                asset_data=None,
                 asset_len=asset_len,
                 encrypted=encrypted,
                 offset=offset,
@@ -173,74 +208,145 @@ class AssetStore(object):
 
         return asset_store
 
+    def populate_asset_names(self):
+        for filename in KNOWN_ASSETS:
+            asset = self.find_asset(filename)
+            if asset is None:
+                continue
+            asset.filename = filename
+
+    def repackage(self, mods_dir, compression_level=DEFAULT_COMPRESSION_LEVEL):
+        self.populate_asset_names()
+
+        offset = self.DATA_OFFSET
+        for asset in self.assets:
+            if asset.filename is None:
+                continue
+            asset_data = AssetData.from_filename(mods_dir, asset.filename.decode(), asset.encrypted)
+            if asset_data.needs_compression():
+                asset_data.compress(compression_level)
+            asset.asset_data = asset_data
+
+            asset.offset = offset
+            asset.data_size = asset_data.get_data_size()
+            asset.data_offset = asset.offset + 8 + asset.name_len + 1
+
+            # The name hash of soundbank files is padded such that the data_offset is divisible by 32
+            # Padding is between 1 and 32 bytes
+            if asset_data.file_path.suffix == ".bank":
+                padding = 32 - asset.data_offset % 32
+                asset.name_len += padding
+                asset.data_offset += padding
+
+            asset.asset_len = asset.data_size + 1
+            offset += asset.total_size
+
+        self.recalculate_key()
+        self.rehash_all_files()
+        self.pack_assets()
+
+
+@dataclass
+class AssetData:
+    path: Path
+    filename: str
+    encrypted: bool
+
+    def md5sum_of_file(self):
+        with self.file_path.open("rb") as file_:
+            md5sum = hashlib.md5()
+            while chunk := file_.read(8192):
+                md5sum.update(chunk)
+            return md5sum.hexdigest().encode()
+
     @classmethod
-    def load_from_directory(cls, asset_dir, exe_handle, compression_level=20):
-        asset_store = cls(exe_handle)
-        offset = cls.DATA_OFFSET
+    def from_filename(cls, mods_dir, filename, encrypted):
+        for path in [OVERRIDES_DIR, EXTRACTED_DIR]:
+            path = mods_dir / path
+            file_path = path / filename
+            if not file_path.exists():
+                continue
+            return cls(path, filename, encrypted)
 
-        for dir_, _, files in os.walk(asset_dir):
-            for file_ in files:
-                filepath = os.path.join(dir_, file_)
-                filename = filepath.replace(asset_dir, "").replace("\\", "/")[1:]
-                compressed_name = f"{filepath}.zst"
-                encrypted = filename not in UNENCRYPTED_ASSETS
+    @property
+    def file_path(self):
+        return self.path / self.filename
 
-                # Skip files that are compressed
-                if filename.endswith(".zst"):
-                    continue
+    @property
+    def compressed_name(self):
+        return f"{self.filename}.zst"
 
-                if filename.endswith(".png") and not os.path.exists(compressed_name):
-                    print('\nConverting image "{}" to RGBA array'.format(filename))
-                    img = Image.open(filepath).convert("RGBA")
-                    data = pack("<II", img.width, img.height) + bytes(
-                        (
-                            byte if rgba[3] != 0 else 0
-                        )  # Hack to force all transparent pixels to be (0, 0, 0, 0) instead of (255, 255, 255, 0)
-                        for rgba in img.getdata()
-                        for byte in rgba
-                    )
-                else:
-                    with open(filepath, "rb") as f:
-                        data = f.read()
+    @property
+    def compressed_path(self):
+        return self.path / ".compressed" / self.compressed_name
 
-                data_size = len(data)
-                data_offset = offset + 8 + len(filename) + 1
-                name_len = len(filename)
+    @property
+    def md5sum_name(self):
+        return f"{self.filename}.md5sum"
 
-                if encrypted:
-                    if os.path.exists(compressed_name):
-                        data_size = os.path.getsize(compressed_name)
-                    else:
-                        print(f"Compressing {filepath}...")
-                        cctx = zstd.ZstdCompressor(level=compression_level)
-                        data = cctx.compress(data)
-                        data_size = len(data)
-                        with open(compressed_name, "wb") as f:
-                            f.write(data)
+    @property
+    def md5sum_path(self):
+        return self.path / ".compressed" / self.md5sum_name
 
-                # The name hash of soundbank files is padded such that the data_offset is divisible by 16
-                # Padding is between 1 and 16 bytes
-                if filename.endswith(".bank"):
-                    padding = 16 - data_offset % 16
-                    name_len += padding
+    def needs_compression(self):
+        if not self.encrypted:
+            return False
 
-                asset_len = data_size + 1
+        if not self.md5sum_path.exists():
+            return True
 
-                filename = filename.encode()
-                asset = Asset(
-                    name_hash=None,
-                    name_len=name_len,
-                    filename=filename,
-                    asset_len=asset_len,
-                    encrypted=encrypted,
-                    offset=offset,
-                    data_offset=data_offset,
-                    data_size=data_size,
+        if not self.compressed_path.exists():
+            return True
+
+        md5sum = self.md5sum_of_file()
+        with self.md5sum_path.open("rb") as md5sum_file:
+            stored_md5sum = md5sum_file.read().strip()
+        if md5sum != stored_md5sum:
+            return True
+
+        return False
+
+    def compress(self, compression_level=DEFAULT_COMPRESSION_LEVEL):
+        if not self.encrypted:
+            return
+
+        if self.file_path.suffix == ".png":
+            print(f'Converting image "{self.filename}" to RGBA array')
+            with Image.open(self.file_path) as img:
+                img = img.convert("RGBA")
+                data = pack("<II", img.width, img.height) + bytes(
+                    (
+                        byte if rgba[3] != 0 else 0
+                    )  # Hack to force all transparent pixels to be (0, 0, 0, 0) instead of (255, 255, 255, 0)
+                    for rgba in img.getdata()
+                    for byte in rgba
                 )
-                asset_store.assets.append(asset)
-                asset_store.total_size += asset.total_size
-                offset += asset.total_size
+        else:
+            with open(self.file_path, "rb") as f:
+                data = f.read()
 
-        asset_store.recalculate_key()
-        asset_store.rehash_all_files()
-        return asset_store
+        md5sum = self.md5sum_of_file()
+        with self.md5sum_path.open("wb") as md5sum_file:
+            md5sum_file.write(md5sum)
+
+        print(f"Compressing {self.filename}...")
+        cctx = zstd.ZstdCompressor(level=compression_level)
+        data = cctx.compress(data)
+        with open(self.compressed_path, "wb") as compressed_file:
+            compressed_file.write(data)
+
+    def get_data_size(self):
+        if self.encrypted:
+            path = self.compressed_path
+        else:
+            path = self.file_path
+        return path.stat().st_size
+
+    def get_data(self):
+        if self.encrypted:
+            path = self.compressed_path
+        else:
+            path = self.file_path
+
+        with path.open("rb") as file_:
+            return file_.read()

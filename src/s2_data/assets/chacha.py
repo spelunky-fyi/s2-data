@@ -57,7 +57,7 @@ def quad_rounds(s):
 
 
 def sxor(x, y):
-    return bytes(bytearray(a ^ b for a, b in zip(bytearray(x), bytearray(y))))
+    return bytes(a ^ b for a, b in zip(x, y))
 
 
 def s_to_w(s):
