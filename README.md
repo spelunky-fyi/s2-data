@@ -8,45 +8,6 @@ Currently we have documents for the following:
   
 as well as libraries for asset extraction and repacking.
   
-## Development
-
-### Creating VirtualEnv
-In the root directory you can make a virtualenv. It will be excluded from commits by default
-```console
-> python -m venv venv
-```
-
-### Activate VirtualEnv
-
-You'll want to activate the virtual environment whenever you're testing any commands from this package
-
-#### Powershell
-```console
-> venv\Scripts\activate.bat
-```
-
-#### cmd
-```console
-> venv/Scripts/Activate.ps1
-```
-
-#### bash/zsh
-```console
-> source venv/bin/activate
-```
-
-### Setup
-
-Once you have your virtual environment setup and activated you'll want to finish setting up the development environment.
-
-```console
-> python setup.py develop
-```
-
-This will install any dependencies as well as setting up links on your path to your local source files. Once this is done
-you'll be able to execute the binaries right from your path after any changes to the source without the need to build or
-install anything. If you add new source files you may have to run `python setup.py develop` again to make sure they're linked.
-
 ## Installation
 
 Packages are pushed up to PyPI so assuming you have Python installed you should just be able to run the following to install s2-data:
@@ -87,3 +48,44 @@ Repacking expects the directory structure from the extraction step above. It wil
 > cd "C:\Program Files (x86)\Steam\steamapps\common\Spelunky 2"
 > s2-asset-pack.exe Spel2-orig.exe Spel2.exe
 ```
+
+## Development
+
+If you'd like to contribute to s2-data here are some steps to setup your environment.
+
+### Creating VirtualEnv
+In the root directory you can make a virtualenv. It will be excluded from commits by default
+```console
+> python -m venv venv
+```
+
+### Activate VirtualEnv
+
+You'll want to activate the virtual environment whenever you're testing any commands from this package
+
+#### Powershell
+```console
+> venv\Scripts\activate.bat
+```
+
+#### cmd
+```console
+> venv/Scripts/Activate.ps1
+```
+
+#### bash/zsh
+```console
+> source venv/bin/activate
+```
+
+### Setup
+
+Once you have your virtual environment setup and activated you'll want to finish setting up the development environment.
+
+```console
+> python setup.py develop
+```
+
+This will install any dependencies as well as setting up links on your path to your local source files. Once this is done
+you'll be able to execute the binaries right from your path after any changes to the source without the need to build or
+install anything. If you add new source files you may have to run `python setup.py develop` again to make sure they're linked.
