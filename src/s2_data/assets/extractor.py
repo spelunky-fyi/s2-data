@@ -21,7 +21,7 @@ def main():
     asset_store = AssetStore.load_from_file(args.exe)
     seen = {}
 
-    for idx, filename in enumerate(KNOWN_ASSETS):
+    for filename in KNOWN_ASSETS:
         asset = asset_store.find_asset(filename)
         name_hash = asset_store.filename_hash(filename)
         if asset is None:
@@ -51,7 +51,7 @@ def main():
             f.write(data)
         print("Done!")
 
-    for idx, asset in enumerate(sorted(asset_store.assets, key=lambda a: a.offset)):
+    for asset in sorted(asset_store.assets, key=lambda a: a.offset):
         name_hash = asset_store.filename_hash(asset.filename)
         if asset.name_hash not in seen:
             print("Un-extracted Asset", asset)

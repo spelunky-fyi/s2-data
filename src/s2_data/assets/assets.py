@@ -96,7 +96,7 @@ class AssetStore(object):
         for asset in self.assets:
             if asset.filename is None:
                 continue
-            asset.name_hash = self.filename_hash(asset.filename)
+            asset.name_hash = self.filename_hash(asset.filename).ljust(asset.name_len, b"\x00")
 
     def find_asset(self, filename):
         if filename is None:
@@ -187,7 +187,7 @@ class AssetStore(object):
 
                 # Skip files that are compressed
                 if filename.endswith(".zst"):
-                    continue  # skip converted images
+                    continue
 
                 if filename.endswith(".png") and not os.path.exists(compressed_name):
                     print('\nConverting image "{}" to RGBA array'.format(filename))
@@ -204,6 +204,8 @@ class AssetStore(object):
                         data = f.read()
 
                 data_size = len(data)
+                data_offset = offset + 8 + len(filename) + 1
+                name_len = len(filename)
 
                 if encrypted:
                     if os.path.exists(compressed_name):
@@ -216,13 +218,18 @@ class AssetStore(object):
                         with open(compressed_name, "wb") as f:
                             f.write(data)
 
-                data_offset = offset + 8 + len(filename) + 1
+                # The name hash of soundbank files is padded such that the data_offset is divisible by 16
+                # Padding is between 1 and 16 bytes
+                if filename.endswith(".bank"):
+                    padding = 16 - data_offset % 16
+                    name_len += padding
+
                 asset_len = data_size + 1
 
                 filename = filename.encode()
                 asset = Asset(
                     name_hash=None,
-                    name_len=len(filename),
+                    name_len=name_len,
                     filename=filename,
                     asset_len=asset_len,
                     encrypted=encrypted,
@@ -237,7 +244,3 @@ class AssetStore(object):
         asset_store.recalculate_key()
         asset_store.rehash_all_files()
         return asset_store
-
-
-
-
