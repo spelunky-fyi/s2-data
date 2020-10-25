@@ -38,7 +38,7 @@ DEBUG_LIST_ASSETS = (
 # We overwrite the exit() call with NOPs
 PATCH_START = b"\x48\x3B\xC1\x74\x09\x33\xC9\xFF"
 PATCH_END = 0xCC
-PATCH_REPLACE = b"\x48\x3B\xC1\x74\x09" + b"\x90" * 10
+PATCH_REPLACE = b"\x48\x3B\xC1\x74\x09" + b"\x90" * 9
 
 
 class Patcher:
@@ -136,8 +136,6 @@ def main():
     source_asset_store = AssetStore.load_from_file(args.source)
 
     with open(args.dest, "rb+") as dest_file:
-        # patcher = Patcher(dest_file)
-        # patcher.patch()
 
         dest_asset_store = AssetStore.load_from_directory(args.asset_dir, dest_file)
 
@@ -146,6 +144,8 @@ def main():
             sys.exit(1)
 
         dest_asset_store.pack_assets(args.asset_dir)
+        patcher = Patcher(dest_file)
+        patcher.patch()
 
 
 if __name__ == "__main__":
