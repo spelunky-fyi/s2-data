@@ -18,7 +18,7 @@ def main():
 
     args = parser.parse_args()
 
-    asset_store = AssetStore(args.exe)
+    asset_store = AssetStore.load_from_file(args.exe)
     seen = {}
 
     for idx, filename in enumerate(KNOWN_ASSETS):
