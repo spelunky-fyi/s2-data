@@ -6,6 +6,8 @@ Currently we have documents for the following:
   * [Save Format](docs/save-format.md)
   * [Leaderboards Format](docs/leaderboards-format.md)
   
+as well as libraries for asset extraction and repacking.
+  
 ## Development
 
 ### Creating VirtualEnv
