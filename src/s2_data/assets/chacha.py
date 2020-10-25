@@ -138,7 +138,7 @@ class Key:
         self.key ^= v4 ^ ((v4 ^ (v4 >> 28)) >> 23)
 
 
-def _chacha(name, data, key):
+def chacha(name, data, key):
     # Untweaked key begins as half-advanced `key`
     h = two_rounds(pack(b"<QQQQQQQQ", key, len(name), 0, 0, 0, 0, 0, 0))
 
@@ -164,16 +164,3 @@ def _chacha(name, data, key):
         out += sxor(data, key[: len(data)][::-1])
 
     return out
-
-
-def decrypt_data(name, data, key=0xBABE):
-    data = _chacha(name, data, key)
-    cctx = zstd.ZstdDecompressor()
-    data = cctx.decompress(data)
-    return data
-
-
-def encrypt_data(name, data, key=0xBABE, compression_level=DEFAULT_COMPRESSION_LEVEL):
-    cctx = zstd.ZstdCompressor(level=compression_level)
-    data = cctx.compress(data)
-    return _chacha(name, data, key)
