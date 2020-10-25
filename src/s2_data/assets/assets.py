@@ -14,6 +14,10 @@ from .known_assets import KNOWN_ASSETS
 EXTRACTED_DIR = Path("Extracted")
 OVERRIDES_DIR = Path("Overrides")
 DEFAULT_COMPRESSION_LEVEL = 20
+BANK_ALIGNMENT = 32
+
+class MissingAsset(Exception):
+    """Returned when an expected asset is missing."""
 
 
 class Asset(object):
@@ -171,7 +175,6 @@ class AssetStore(object):
 
         self.exe_handle.write(pack("<II", 0, 0))
 
-
     @classmethod
     def load_from_file(cls, exe_handle):
         asset_store = cls(exe_handle)
@@ -223,6 +226,8 @@ class AssetStore(object):
             if asset.filename is None:
                 continue
             asset_data = AssetData.from_filename(mods_dir, asset.filename.decode(), asset.encrypted)
+            if asset_data is None:
+                raise MissingAsset(asset.filename.decode())
             if asset_data.needs_compression():
                 asset_data.compress(compression_level)
             asset.asset_data = asset_data
@@ -234,7 +239,7 @@ class AssetStore(object):
             # The name hash of soundbank files is padded such that the data_offset is divisible by 32
             # Padding is between 1 and 32 bytes
             if asset_data.file_path.suffix == ".bank":
-                padding = 32 - asset.data_offset % 32
+                padding = BANK_ALIGNMENT - asset.data_offset % BANK_ALIGNMENT
                 asset.name_len += padding
                 asset.data_offset += padding
 

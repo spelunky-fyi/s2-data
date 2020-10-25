@@ -3,7 +3,7 @@ from struct import pack
 import os
 from pathlib import Path
 
-from .assets import AssetStore
+from .assets import AssetStore, MissingAsset
 from .patcher import Patcher
 
 
@@ -55,7 +55,14 @@ def main():
 
     with open(args.dest, "rb+") as dest_file:
         asset_store = AssetStore.load_from_file(dest_file)
-        asset_store.repackage(Path(args.mods_dir), args.compression_level)
+        try:
+            asset_store.repackage(Path(args.mods_dir), args.compression_level)
+        except MissingAsset as err:
+            print("")
+            print(f"Failed to find expected asset: {err}. Unabled to proceed...")
+            print("Did you run s2-asset-extract in this directory?")
+            print("")
+            sys.exit(1)
 
         patcher = Patcher(dest_file)
         patcher.patch()
