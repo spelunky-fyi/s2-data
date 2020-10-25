@@ -1,3 +1,5 @@
+[![PyPi Version](https://img.shields.io/pypi/v/s2-data.svg)](https://pypi.python.org/pypi/s2-data/)
+
 # s2-data
 
 Repository for documenting and interacting with various formats for Spelunky 2.
