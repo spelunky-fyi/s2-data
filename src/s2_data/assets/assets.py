@@ -260,8 +260,10 @@ class AssetData:
     def md5sum_of_file(self):
         with self.file_path.open("rb") as file_:
             md5sum = hashlib.md5()
-            while chunk := file_.read(8192):
+            chunk = file_.read(8192)
+            while chunk:
                 md5sum.update(chunk)
+                chunk = file_.read(8192)
             return md5sum.hexdigest().encode()
 
     @classmethod
