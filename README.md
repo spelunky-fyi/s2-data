@@ -12,7 +12,7 @@ as well as libraries for asset extraction and repacking.
   
 ## Installation
 
-You'll need to have at least [Python 3.7](https://www.python.org/downloads/) installed to install these tools, but anything newer should also work. Make sure when you're installing Python that you click the checkbox to add Python to your `PATH`:
+You'll need to have [Python 3.7 or 3.8](https://www.python.org/downloads/) installed to install these tools. Make sure when you're installing Python that you click the checkbox to add Python to your `PATH`:
 
 ![Add Python to PATH](https://cdn.discordapp.com/attachments/756241793753809106/771016197424152576/0001_add_Python_to_Path.png).
 
