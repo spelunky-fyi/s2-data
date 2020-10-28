@@ -12,7 +12,13 @@ as well as libraries for asset extraction and repacking.
   
 ## Installation
 
-Packages are pushed up to PyPI so assuming you have Python installed you should just be able to run the following to install s2-data:
+You'll need to have at least [Python 3.7](https://www.python.org/downloads/) installed to install these tools, but anything newer should also work. Make sure when you're installing Python that you click the checkbox to add Python to your `PATH`:
+
+![Add Python to PATH](https://cdn.discordapp.com/attachments/756241793753809106/771016197424152576/0001_add_Python_to_Path.png).
+
+If you've already installed Python without doing this you can either re-install or follow the instructions at this site: https://datatofish.com/add-python-to-windows-path/
+
+Once you have python installed you can open `cmd` and run the following:
 
 ```console
 pip install --upgrade s2-data
@@ -20,15 +26,9 @@ pip install --upgrade s2-data
 
 ## Modding
 
-> :warning: This currently only works on version 1.14 of Spelunky 2
+> :warning: This currently only works on version 1.14+ of Spelunky 2
 
-s2-data provides two binaries related to modding. `s2-asset-extract` and `s2-asset-pack`. Assuming you ran the command above to
-install `s2-data` you should find these two packages in directories such as
-
-```
-C:\Users\$USER\AppData\Local\Programs\Python\Python$VERSION\Scripts\s2-asset-extract.exe
-C:\Users\$USER\AppData\Local\Programs\Python\Python$VERSION\Scripts\s2-asset-pack.exe
-```
+Once installed you should have two binaries related to modding. `s2-asset-extract` and `s2-asset-pack`.
 
 if `C:\Users\$USER\AppData\Local\Programs\Python\Python$VERSION\Scripts` is on your path then you can use `s2-asset-extract` and `s2-asset-pack` directly, otherwise you need to specify the fully qualified path. I will use the short names in the rest of this document. If you'd like to learn more about adding python and installed scripts to your path you can learn more here: https://datatofish.com/add-python-to-windows-path/
 
@@ -48,7 +48,7 @@ Repacking expects the directory structure from the extraction step above. It wil
 
 ```console
 > cd "C:\Program Files (x86)\Steam\steamapps\common\Spelunky 2"
-> s2-asset-pack.exe Spel2-orig.exe Spel2.exe
+> s2-asset-pack Spel2-orig.exe Spel2.exe
 ```
 
 ## Development
