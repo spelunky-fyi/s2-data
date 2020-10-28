@@ -28,9 +28,7 @@ pip install --upgrade s2-data
 
 > :warning: This currently only works on version 1.14+ of Spelunky 2
 
-Once installed you should have two binaries related to modding. `s2-asset-extract` and `s2-asset-pack`.
-
-if `C:\Users\$USER\AppData\Local\Programs\Python\Python$VERSION\Scripts` is on your path then you can use `s2-asset-extract` and `s2-asset-pack` directly, otherwise you need to specify the fully qualified path. I will use the short names in the rest of this document. If you'd like to learn more about adding python and installed scripts to your path you can learn more here: https://datatofish.com/add-python-to-windows-path/
+Once installed you should have two binaries related to modding. `s2-asset-extract` and `s2-asset-pack`. You can then use the following sections for instructions on extracting, modifying, and repacking the assets.
 
 ### Extraction
 
