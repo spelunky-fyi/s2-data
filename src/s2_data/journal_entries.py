@@ -592,7 +592,7 @@ ENTRIES = {
             5, "Spear Trap", "These wooden spear traps can be hard to spot amidst the Jungle foliage.",
         ),
         Entry(
-            6, "Thorny Trap", "The thorns of these thick vines aren't long enough to impale, but they're sharp enough to deliver a nasty poke.",
+            6, "Thorny Vine", "The thorns of these thick vines aren't long enough to impale, but they're sharp enough to deliver a nasty poke.",
         ),
         Entry(
             7, "Snap Trap", "The slightest pressure will cause its powerful steel jaws to snap shut, causing massive damage.",
