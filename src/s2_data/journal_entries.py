@@ -117,7 +117,7 @@ ENTRIES = {
             19, "Guy Spelunky", "He's spent his life in pursuit of adventure (and treasure). A young man no longer, he's re-evaluating what's most important to him.",
         ),
         Entry(
-            20, "Classic Spelunky", "A version of Guy Spelunky from a parallel universe made of large, flat blocks of colors.",
+            20, "Classic Guy", "A version of Guy Spelunky from a parallel universe made of large, flat blocks of colors.",
         ),
         Entry(
             21, "Terra Tunnel", "She met Manfred many years ago, when she rescued him from a cave-in. Together they've built a thriving shortcut-building business!",
