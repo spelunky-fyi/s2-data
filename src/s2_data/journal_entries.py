@@ -370,7 +370,7 @@ ENTRIES = {
             10, "Tiki man", "A masked Jungle-dweller who hunts with a large boomerang.",
         ),
         Entry(
-            11, "Witch Docter", "A Tiki Tribe elder who practices black magic. They use an effigy to attack intruders.",
+            11, "Witch Doctor", "A Tiki Tribe elder who practices black magic. They use an effigy to attack intruders.",
         ),
         Entry(
             12, "Mosquito", "An annoying pest! Makes me mad just thinking about it.",
