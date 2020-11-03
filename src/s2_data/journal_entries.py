@@ -583,7 +583,7 @@ ENTRIES = {
             2, "Arrow Trap", "An ancient trap of unknown origin. It's responsible for the death of many an explorer.",
         ),
         Entry(
-            3, "Bear Trap", "Quillback built these to train his followers, although they mostly serve to put them \"to sleep\".",
+            3, "Totem Trap", "Quillback built these to train his followers, although they mostly serve to put them \"to sleep\".",
         ),
         Entry(
             4, "Log Trap", "The trunk of a massive tree, carved by Quillback and strung up to protect his treasure.",
@@ -595,7 +595,7 @@ ENTRIES = {
             6, "Thorny Vine", "The thorns of these thick vines aren't long enough to impale, but they're sharp enough to deliver a nasty poke.",
         ),
         Entry(
-            7, "Snap Trap", "The slightest pressure will cause its powerful steel jaws to snap shut, causing massive damage.",
+            7, "Bear Trap", "The slightest pressure will cause its powerful steel jaws to snap shut, causing massive damage.",
         ),
         Entry(
             8, "Powder Box", "A wooden box hastily filled with black powder. It will explode at the slightest provocation.",
