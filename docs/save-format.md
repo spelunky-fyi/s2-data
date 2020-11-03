@@ -250,11 +250,11 @@ https://mossranking.com/discord
 ```
  bc: bool - Discovered Spikes
  bd: bool - Discovered Arrow Trap
- be: bool - Discovered Bear Trap
+ be: bool - Discovered Totem Trap
  bf: bool - Discovered Log Trap
  c0: bool - Discovered Spear Trap
  c1: bool - Discovered Thorny Vine
- c2: bool - Discovered Snap Trap
+ c2: bool - Discovered Bear Trap
  c3: bool - Discovered Powder Box
  c4: bool - Discovered Falling Platform
  c5: bool - Discovered Spikeball

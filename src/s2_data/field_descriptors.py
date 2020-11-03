@@ -351,11 +351,11 @@ field_descriptors = {
     'traps_discovered': Category('Journal: Traps Discovered', {
         'spikes':           FieldDescriptor(0xbc, "Spikes",           BoolType()),
         'arrow_trap':       FieldDescriptor(0xbd, "Arrow Trap",       BoolType()),
-        'bear_trap':        FieldDescriptor(0xbe, "Bear Trap",        BoolType()),
+        'bear_trap':        FieldDescriptor(0xbe, "Totem Trap",       BoolType()),
         'log_trap':         FieldDescriptor(0xbf, "Log Trap",         BoolType()),
         'spear_trap':       FieldDescriptor(0xc0, "Spear Trap",       BoolType()),
         'thorny_vine':      FieldDescriptor(0xc1, "Thorny Vine",      BoolType()),
-        'snap_trap':        FieldDescriptor(0xc2, "Snap Trap",        BoolType()),
+        'snap_trap':        FieldDescriptor(0xc2, "Bear Trap",        BoolType()),
         'powder_box':       FieldDescriptor(0xc3, "Powder Box",       BoolType()),
         'falling_platform': FieldDescriptor(0xc4, "Falling Platform", BoolType()),
         'spikeball':        FieldDescriptor(0xc5, "Spikeball",        BoolType()),
