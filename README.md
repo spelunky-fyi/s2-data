@@ -26,7 +26,7 @@ pip install --upgrade s2-data
 
 ## Modding
 
-> :warning: This currently only works on version 1.14+ of Spelunky 2
+> :warning: This currently only works on version 1.14+ of Spelunky 2. You'll want to have at least version 0.17 of `s2-data` for 1.15+ of Spelunky 2.
 
 Once installed you should have two binaries related to modding. `s2-asset-extract` and `s2-asset-pack`. You can then use the following sections for instructions on extracting, modifying, and repacking the assets.
 

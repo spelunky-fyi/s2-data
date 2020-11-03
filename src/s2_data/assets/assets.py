@@ -67,7 +67,7 @@ class Asset(object):
         filepath = self.path / self.filename.decode()
         compressed_filepath = compressed_path / f"{self.filename.decode()}.zst"
         md5sum_filepath = compressed_path / f"{self.filename.decode()}.md5sum"
-        
+
         handle.seek(self.data_offset)
         data = handle.read(self.data_size)
 
@@ -78,7 +78,7 @@ class Asset(object):
 
                 # Decompress
                 cctx = zstd.ZstdDecompressor()
-                data = cctx.decompress(data)          
+                data = cctx.decompress(data)
 
                 # Recompress at higher compression level to give
                 # better chance of assets fitting in binary
@@ -159,7 +159,7 @@ class AssetStore(object):
         for asset in self.assets:
             if asset.filename is None:
                 continue
-          
+
             assert asset.data_size == asset.asset_data.get_data_size()
             data = asset.asset_data.get_data()
 

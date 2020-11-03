@@ -45,6 +45,7 @@ KNOWN_ASSETS = [
     b"Data/Levels/Arena/dm8-4.lvl",
     b"Data/Levels/Arena/dm8-5.lvl",
     b"Data/Levels/Arena/dmpreview.tok",
+    b"Data/Levels/babylonarea_1-1.lvl",
     b"Data/Levels/babylonarea.lvl",
     b"Data/Levels/basecamp_garden.lvl",
     b"Data/Levels/basecamp.lvl",

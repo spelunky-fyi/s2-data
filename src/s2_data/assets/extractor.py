@@ -50,7 +50,12 @@ def main():
         asset.filename = filename
         seen[asset.name_hash] = asset
 
-        print("Extracting {}... ".format(Path(filename.decode())))
+        filepath = Path(filename.decode())
+        if args.lazy and (EXTRACTED_DIR / filepath).exists():
+            print(f"{filepath} already found. Skipping...")
+            continue
+
+        print("Extracting {}... ".format(filepath))
         asset.extract(EXTRACTED_DIR, args.exe, asset_store.key)
         print("")
 
