@@ -514,7 +514,7 @@ ENTRIES = {
             58, "Giant Fly", "A fly of titanic proportions. It looks threatening but seems rather uninterested in us...",
         ),
         Entry(
-            59, "Hundun", "The muddled dreamer Hundun. The cosmic egg Hunden. The majestic child Hundun. The unstoppable Hunden.",
+            59, "Hundun", "The muddled dreamer Hundun. The cosmic egg Hundun. The majestic child Hundun. The unstoppable Hundun.",
         ),
         Entry(
             60, "Eggplant Minister", "The most loyal servants of the King of Hell, who continued to follow though commands no longer left his lips.",
