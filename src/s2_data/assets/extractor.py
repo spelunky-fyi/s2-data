@@ -65,3 +65,7 @@ def main():
         name_hash = asset_store.filename_hash(asset.filename)
         if asset.name_hash not in seen:
             print("Un-extracted Asset", asset)
+
+
+if __name__ == '__main__':
+    main()
