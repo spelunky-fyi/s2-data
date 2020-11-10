@@ -1,4 +1,5 @@
 import binascii
+from concurrent.futures import ThreadPoolExecutor
 from pathlib import Path
 
 from .assets import KNOWN_ASSETS, AssetStore, EXTRACTED_DIR, OVERRIDES_DIR
@@ -36,8 +37,7 @@ def main():
         (OVERRIDES_DIR / dir_).mkdir(parents=True, exist_ok=True)
         (OVERRIDES_DIR / ".compressed" / dir_).mkdir(parents=True, exist_ok=True)
 
-
-    for filename in KNOWN_ASSETS:
+    def extract_single(filename):
         asset = asset_store.find_asset(filename)
         name_hash = asset_store.filename_hash(filename)
         if asset is None:
@@ -45,7 +45,7 @@ def main():
                 filename.decode(),
                 binascii.hexlify(name_hash)
             ))
-            continue
+            return
 
         asset.filename = filename
         seen[asset.name_hash] = asset
@@ -53,11 +53,13 @@ def main():
         filepath = Path(filename.decode())
         if args.lazy and (EXTRACTED_DIR / filepath).exists():
             print(f"{filepath} already found. Skipping...")
-            continue
+            return
 
         print("Extracting {}... ".format(filepath))
         asset.extract(EXTRACTED_DIR, args.exe, asset_store.key)
-        print("")
+
+    pool = ThreadPoolExecutor()
+    pool.map(extract_single, KNOWN_ASSETS)
 
     for asset in sorted(asset_store.assets, key=lambda a: a.offset):
         name_hash = asset_store.filename_hash(asset.filename)
