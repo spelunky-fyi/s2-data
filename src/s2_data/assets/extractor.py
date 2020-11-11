@@ -1,5 +1,5 @@
 import binascii
-from concurrent.futures import ThreadPoolExecutor
+from concurrent.futures import ThreadPoolExecutor, wait
 from pathlib import Path
 import logging
 
@@ -60,7 +60,8 @@ def main():
             logging.error(err)
 
     pool = ThreadPoolExecutor()
-    pool.map(extract_single, seen.values())
+    futures = [pool.submit(extract_single, asset) for asset in seen.values()]
+    wait(futures, timeout=300)
 
     for asset in sorted(asset_store.assets, key=lambda a: a.offset):
         name_hash = asset_store.filename_hash(asset.filename)
