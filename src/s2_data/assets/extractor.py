@@ -1,5 +1,4 @@
 import binascii
-from concurrent.futures import ThreadPoolExecutor
 from pathlib import Path
 
 from .assets import KNOWN_ASSETS, AssetStore, EXTRACTED_DIR, OVERRIDES_DIR
@@ -58,8 +57,8 @@ def main():
         print("Extracting {}... ".format(filepath))
         asset.extract(EXTRACTED_DIR, args.exe, asset_store.key)
 
-    pool = ThreadPoolExecutor()
-    pool.map(extract_single, KNOWN_ASSETS)
+    for filename in KNOWN_ASSETS:
+        extract_single(filename)
 
     for asset in sorted(asset_store.assets, key=lambda a: a.offset):
         name_hash = asset_store.filename_hash(asset.filename)
