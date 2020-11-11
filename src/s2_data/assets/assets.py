@@ -4,6 +4,7 @@ import binascii
 import io
 import os
 import hashlib
+import logging
 from pathlib import Path
 import zstandard as zstd
 from dataclasses import dataclass
@@ -34,6 +35,7 @@ class Asset(object):
         self.data_offset = data_offset
         self.data_size = data_size
         self.asset_data = asset_data
+        self.data = None
 
     @property
     def total_size(self):
@@ -60,7 +62,14 @@ class Asset(object):
         l = min(len(hash), self.name_len)
         return hash[:l] == self.name_hash[:l]
 
-    def extract(self, dest_path, handle, key, compression_level=DEFAULT_COMPRESSION_LEVEL):
+    def load_data(self, handle):
+        """ Cache data on the asset. Must be called before extraction."""
+        handle.seek(self.data_offset)
+        self.data = handle.read(self.data_size)
+
+    def extract(self, dest_path, key, compression_level=DEFAULT_COMPRESSION_LEVEL):
+        if self.data is None:
+            raise RuntimeError("load_data hasn't been called.")
 
         self.path = dest_path
         compressed_path = dest_path / ".compressed"
@@ -68,47 +77,45 @@ class Asset(object):
         compressed_filepath = compressed_path / f"{self.filename.decode()}.zst"
         md5sum_filepath = compressed_path / f"{self.filename.decode()}.md5sum"
 
-        handle.seek(self.data_offset)
-        data = handle.read(self.data_size)
 
         if self.encrypted:
             try:
                 # Decrypt
-                data = chacha(self.filename, data, key)
+                self.data = chacha(self.filename, self.data, key)
 
                 # Decompress
                 cctx = zstd.ZstdDecompressor()
-                data = cctx.decompress(data)
+                self.data = cctx.decompress(self.data)
 
                 # Recompress at higher compression level to give
                 # better chance of assets fitting in binary
-                print(f"Storing compressed asset {compressed_filepath}...")
+                logging.info(f"Storing compressed asset {compressed_filepath}...")
                 with compressed_filepath.open("wb") as compressed_file:
                     cctx = zstd.ZstdCompressor(level=compression_level)
-                    compressed_data = cctx.compress(data)
+                    compressed_data = cctx.compress(self.data)
                     compressed_file.write(compressed_data)
 
             except Exception as exc:
-                print(exc)
+                logging.error(exc)
                 return None
 
 
         if filepath.suffix == ".png":
-            width, height = unpack(b"<II", data[:8])
-            image = Image.frombytes("RGBA", (width, height), data[8:], "raw")
+            width, height = unpack(b"<II", self.data[:8])
+            image = Image.frombytes("RGBA", (width, height), self.data[8:], "raw")
             new_data = io.BytesIO()
             image.save(new_data, format="PNG")
-            data = new_data.getvalue()
+            self.data = new_data.getvalue()
 
         # Get a hash of the the uncompressed file to be used
         # to detect if the source file changed
-        md5sum = hashlib.md5(data).hexdigest()
+        md5sum = hashlib.md5(self.data).hexdigest()
         with md5sum_filepath.open("w") as md5sum_file:
             md5sum_file.write(md5sum)
 
-        print(f"Storing asset {filepath}...")
+        logging.info(f"Storing asset {filepath}...")
         with filepath.open("wb") as asset_file:
-            asset_file.write(data)
+            asset_file.write(self.data)
 
 
 class AssetStore(object):
@@ -164,10 +171,10 @@ class AssetStore(object):
             data = asset.asset_data.get_data()
 
             if asset.encrypted:
-                print(f"Encrypting file {asset.asset_data.filename}")
+                logging.info(f"Encrypting file {asset.asset_data.filename}")
                 data = chacha(asset.filename, data, self.key)
 
-            print(f"Packing file {asset.asset_data.filename}")
+            logging.info(f"Packing file {asset.asset_data.filename}")
             self.exe_handle.write(pack("<II", asset.asset_len, asset.name_len))
             self.exe_handle.write(asset.name_hash)
             self.exe_handle.write(pack("<b", asset.encrypted))
@@ -318,7 +325,7 @@ class AssetData:
             return
 
         if self.file_path.suffix == ".png":
-            print(f'Converting image "{self.filename}" to RGBA array')
+            logging.info(f'Converting image "{self.filename}" to RGBA array')
             with Image.open(self.file_path) as img:
                 img = img.convert("RGBA")
                 data = pack("<II", img.width, img.height) + bytes(
@@ -336,7 +343,7 @@ class AssetData:
         with self.md5sum_path.open("wb") as md5sum_file:
             md5sum_file.write(md5sum)
 
-        print(f"Compressing {self.filename}...")
+        logging.info(f"Compressing {self.filename}...")
         cctx = zstd.ZstdCompressor(level=compression_level)
         data = cctx.compress(data)
         with open(self.compressed_path, "wb") as compressed_file:

@@ -2,6 +2,7 @@ from PIL import Image
 from struct import pack
 import os
 from pathlib import Path
+import logging
 
 from .assets import AssetStore, MissingAsset
 from .patcher import Patcher
@@ -41,6 +42,8 @@ def main():
         help="Path where patched binary will be created.",
     )
     args = parser.parse_args()
+
+    logging.basicConfig(format="%(levelname)s - %(message)s", level=logging.INFO)
 
     if os.path.exists(args.dest):
         answer = input(

@@ -12,6 +12,9 @@ cmp rax,rcx  jz -/   xor ecx,ecx  call cs:exit        int 3   \-> mov rcx,[rbp+1
 We overwrite the exit() call with NOPs
 """
 
+import logging
+
+
 PATCH_START = b"\x48\x3B\xC1\x74\x09\x33\xC9\xFF"
 PATCH_END = 0xCC
 PATCH_REPLACE = b"\x48\x3B\xC1\x74\x09" + b"\x90" * 9
@@ -39,23 +42,22 @@ class Patcher:
             self.exe_handle.seek(self.exe_handle.tell() - overlap)
 
     def patch(self):
-        print("Patching asset checksum check")
+        logging.info("Patching asset checksum check")
         index = self.find(PATCH_START)
         if index == -1:
-            print("Didn't find instructions to patch. Is game unmodified?")
+            logging.warning("Didn't find instructions to patch. Is game unmodified?")
             return False
 
         self.exe_handle.seek(index)
         ops = self.exe_handle.read(14)
-        print(repr(ops))
 
         if ops[-1] != PATCH_END:
-            print(
+            logging.warning(
                 "Checksum check has unexpected form, this script has to be updated for the current game version."
             )
-            print("(Expected 0x{:02x}, found 0x{:02x})".format(PATCH_END, ops[-1]))
+            logging.warning("(Expected 0x{:02x}, found 0x{:02x})".format(PATCH_END, ops[-1]))
             return False
 
-        print("Found check at 0x{:08x}, replacing with NOPs".format(index))
+        logging.info("Found check at 0x{:08x}, replacing with NOPs".format(index))
         self.exe_handle.seek(index)
         self.exe_handle.write(PATCH_REPLACE)
