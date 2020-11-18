@@ -3,14 +3,11 @@ import hashlib
 import io
 import logging
 import os
-import pathlib
 from collections import defaultdict
 from concurrent.futures import wait
 from concurrent.futures.thread import ThreadPoolExecutor
 from dataclasses import dataclass
 from enum import Enum
-from importlib.machinery import SOURCE_SUFFIXES
-from os.path import split
 from pathlib import Path
 from struct import pack, unpack
 
@@ -20,11 +17,11 @@ from PIL import Image
 from .chacha import Key, chacha, filename_hash
 from .known_assets import IMAGES_DONT_CONVERT, KNOWN_ASSETS
 
+EXTRACTED_DIR = Path("Extracted")
+OVERRIDES_DIR = Path("Overrides")
 DEFAULT_COMPRESSION_LEVEL = 20
 BANK_ALIGNMENT = 32
 
-EXTRACTED_DIR = Path("Extracted")
-OVERRIDES_DIR = Path("Overrides")
 
 class MissingAsset(Exception):
     """Returned when an expected asset is missing."""
@@ -105,8 +102,8 @@ class Asset(object):
                     compressed_data = cctx.compress(self.data)
                     compressed_file.write(compressed_data)
 
-            except Exception as exc:  # pylint: disable=broad-except
-                logging.error("HI %s", exc)
+            except Exception:  # pylint: disable=broad-except
+                logging.exception("Failed compression")
                 return None
 
 
@@ -242,7 +239,10 @@ class AssetStore(object):
                 continue
             asset.filename = filename
 
-    def repackage(self, mods_dir, search_dirs, extracted_dir, compression_level=DEFAULT_COMPRESSION_LEVEL):
+    def repackage(
+        self, mods_dir, search_dirs, extracted_dir,
+        compression_level=DEFAULT_COMPRESSION_LEVEL
+    ):
         self.populate_asset_names()
         asset_bundle = AssetBundle.from_dirs(self, Path(mods_dir), search_dirs, extracted_dir)
         asset_bundle.compress(compression_level=compression_level)
@@ -318,7 +318,10 @@ def get_files_from_search_dir(mods_dir, search_dir):
 
             if file_ in out_files:
                 MultipleMatchingAssets(f"Found {file_} multiple times in {search_dir}")
-            out_files[file_] = (search_dir.relative_to(mods_dir), (Path(root) / file_).relative_to(search_dir))
+            out_files[file_] = (
+                search_dir.relative_to(mods_dir),
+                (Path(root) / file_).relative_to(search_dir)
+            )
 
     return out_files
 
@@ -408,7 +411,9 @@ class AssetBundle:
                 if not file_path.exists():
                     raise MissingAsset(f"Didn't find an asset for {file_path}")
 
-                asset_datas[str(Path(asset.filename.decode()).name)] = AssetData(mods_dir, fallback_dir, filename, asset)
+                asset_datas[str(Path(asset.filename.decode()).name)] = AssetData(
+                    mods_dir, fallback_dir, filename, asset
+                )
                 continue
 
             if resolution_policy == ResolutionPolicy.RaiseError and len(assets) >= 2:
@@ -423,7 +428,9 @@ class AssetBundle:
                 idx = -1
 
             search_dir, filename_ = assets[idx]
-            asset_datas[str(Path(asset.filename.decode()).name)] = AssetData(mods_dir, search_dir, filename_, asset)
+            asset_datas[str(Path(asset.filename.decode()).name)] = AssetData(
+                mods_dir, search_dir, filename_, asset
+            )
 
         return cls(asset_datas)
 

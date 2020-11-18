@@ -57,7 +57,7 @@ def main():
         try:
             logging.info("Extracting %s... ", asset.filename.decode())
             asset.extract(mods_dir, EXTRACTED_DIR, asset_store.key)
-        except Exception as err:
+        except Exception:
             logging.exception("Failed Extraction")
 
     pool = ThreadPoolExecutor()
