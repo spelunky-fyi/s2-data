@@ -1,8 +1,10 @@
 #!/usr/bin/env python3
 
-from s2_data import field_descriptors
 import io
 import sys
+
+from s2_data import field_descriptors
+
 
 def to_text():
     with io.open(sys.argv[1], 'rb') as save_file:

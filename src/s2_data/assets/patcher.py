@@ -14,7 +14,6 @@ We overwrite the exit() call with NOPs
 
 import logging
 
-
 PATCH_START = b"\x48\x3B\xC1\x74\x09\x33\xC9\xFF"
 PATCH_END = 0xCC
 PATCH_REPLACE = b"\x48\x3B\xC1\x74\x09" + b"\x90" * 9

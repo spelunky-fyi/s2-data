@@ -1,6 +1,6 @@
 from struct import pack, unpack
-import zstandard as zstd
 
+import zstandard as zstd
 
 DEFAULT_COMPRESSION_LEVEL = 20
 

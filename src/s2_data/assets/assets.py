@@ -1,15 +1,16 @@
-from struct import pack, unpack
-from PIL import Image
 import binascii
-import io
-import os
 import hashlib
+import io
 import logging
-from pathlib import Path
-import zstandard as zstd
+import os
 from dataclasses import dataclass
+from pathlib import Path
+from struct import pack, unpack
 
-from .chacha import Key, filename_hash, chacha
+import zstandard as zstd
+from PIL import Image
+
+from .chacha import Key, chacha, filename_hash
 from .known_assets import KNOWN_ASSETS
 
 EXTRACTED_DIR = Path("Extracted")

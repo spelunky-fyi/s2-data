@@ -1,9 +1,9 @@
 import binascii
+import logging
 from concurrent.futures import ThreadPoolExecutor, wait
 from pathlib import Path
-import logging
 
-from .assets import KNOWN_ASSETS, AssetStore, EXTRACTED_DIR, OVERRIDES_DIR
+from .assets import EXTRACTED_DIR, KNOWN_ASSETS, OVERRIDES_DIR, AssetStore
 
 DEFAULT_DIR = Path("Mods")
 EXTRACTED_DIR = DEFAULT_DIR / EXTRACTED_DIR

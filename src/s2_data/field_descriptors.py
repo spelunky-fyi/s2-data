@@ -1,7 +1,9 @@
-from dataclasses import dataclass
-from enum import IntFlag, IntEnum
 import typing
+from dataclasses import dataclass
+from enum import IntEnum, IntFlag
+
 from .field_types import *
+
 
 class CharacterUnlockFlags(IntFlag):
     Ana        = 1 << 0

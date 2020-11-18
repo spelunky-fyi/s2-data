@@ -1,8 +1,9 @@
-from PIL import Image
-from struct import pack
+import logging
 import os
 from pathlib import Path
-import logging
+from struct import pack
+
+from PIL import Image
 
 from .assets import AssetStore, MissingAsset
 from .patcher import Patcher
@@ -10,8 +11,8 @@ from .patcher import Patcher
 
 def main():
     import argparse
-    import sys
     import shutil
+    import sys
 
     parser = argparse.ArgumentParser(description="Extract Spelunky 2 Assets.")
 
