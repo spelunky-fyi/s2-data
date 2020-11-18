@@ -2,7 +2,6 @@ import binascii
 import hashlib
 import io
 import logging
-import os
 from dataclasses import dataclass
 from pathlib import Path
 from struct import pack, unpack
@@ -24,7 +23,8 @@ class MissingAsset(Exception):
 
 class Asset(object):
     def __init__(
-        self, name_hash, name_len, filename, asset_data, asset_len, encrypted, offset, data_offset, data_size
+        self, name_hash, name_len, filename, asset_data,
+        asset_len, encrypted, offset, data_offset, data_size
     ):
         self.name_hash = name_hash
         self.name_len = name_len
@@ -59,9 +59,9 @@ class Asset(object):
             self.data_size,
         )
 
-    def match_hash(self, hash):
-        l = min(len(hash), self.name_len)
-        return hash[:l] == self.name_hash[:l]
+    def match_hash(self, hash_):
+        min_len = min(len(hash_), self.name_len)
+        return hash_[:min_len] == self.name_hash[:min_len]
 
     def load_data(self, handle):
         """ Cache data on the asset. Must be called before extraction."""
@@ -72,9 +72,9 @@ class Asset(object):
         if self.data is None:
             raise RuntimeError("load_data hasn't been called.")
 
-        self.path = dest_path
+        path = dest_path
         compressed_path = dest_path / ".compressed"
-        filepath = self.path / self.filename.decode()
+        filepath = path / self.filename.decode()
         compressed_filepath = compressed_path / f"{self.filename.decode()}.zst"
         md5sum_filepath = compressed_path / f"{self.filename.decode()}.md5sum"
 
@@ -90,13 +90,13 @@ class Asset(object):
 
                 # Recompress at higher compression level to give
                 # better chance of assets fitting in binary
-                logging.info(f"Storing compressed asset {compressed_filepath}...")
+                logging.info("Storing compressed asset %s...", compressed_filepath)
                 with compressed_filepath.open("wb") as compressed_file:
                     cctx = zstd.ZstdCompressor(level=compression_level)
                     compressed_data = cctx.compress(self.data)
                     compressed_file.write(compressed_data)
 
-            except Exception as exc:
+            except Exception as exc:  # pylint: disable=broad-except
                 logging.error(exc)
                 return None
 
@@ -114,7 +114,7 @@ class Asset(object):
         with md5sum_filepath.open("w") as md5sum_file:
             md5sum_file.write(md5sum)
 
-        logging.info(f"Storing asset {filepath}...")
+        logging.info("Storing asset %s...", filepath)
         with filepath.open("wb") as asset_file:
             asset_file.write(self.data)
 
@@ -132,6 +132,9 @@ class AssetStore(object):
     @property
     def key(self):
         return self._key.key
+
+    def update_key(self, size):
+        self._key.update(size)
 
     def recalculate_key(self):
         new_key = Key()
@@ -172,10 +175,10 @@ class AssetStore(object):
             data = asset.asset_data.get_data()
 
             if asset.encrypted:
-                logging.info(f"Encrypting file {asset.asset_data.filename}")
+                logging.info("Encrypting file %s", asset.asset_data.filename)
                 data = chacha(asset.filename, data, self.key)
 
-            logging.info(f"Packing file {asset.asset_data.filename}")
+            logging.info("Packing file %s", asset.asset_data.filename)
             self.exe_handle.write(pack("<II", asset.asset_len, asset.name_len))
             self.exe_handle.write(asset.name_hash)
             self.exe_handle.write(pack("<b", asset.encrypted))
@@ -201,7 +204,7 @@ class AssetStore(object):
             data_size = asset_len - 1
 
             asset_store.exe_handle.seek(data_size, 1)
-            asset_store._key.update(asset_len)
+            asset_store.update_key(asset_len)
 
             asset = Asset(
                 name_hash=name_hash,
@@ -244,7 +247,9 @@ class AssetStore(object):
             asset.data_size = asset_data.get_data_size()
             asset.data_offset = asset.offset + 8 + asset.name_len + 1
 
-            # The name hash of soundbank files is padded such that the data_offset is divisible by 32
+            # The name hash of soundbank files is padded such that the data_offset
+            # is divisible by 32.
+            #
             # Padding is between 1 and 32 bytes
             if asset_data.file_path.suffix == ".bank":
                 padding = BANK_ALIGNMENT - asset.data_offset % BANK_ALIGNMENT
@@ -326,25 +331,26 @@ class AssetData:
             return
 
         if self.file_path.suffix == ".png":
-            logging.info(f'Converting image "{self.filename}" to RGBA array')
+            logging.info('Converting image "%s" to RGBA array', self.filename)
             with Image.open(self.file_path) as img:
                 img = img.convert("RGBA")
                 data = pack("<II", img.width, img.height) + bytes(
                     (
                         byte if rgba[3] != 0 else 0
-                    )  # Hack to force all transparent pixels to be (0, 0, 0, 0) instead of (255, 255, 255, 0)
+                    )  # Hack to force all transparent pixels to be (0, 0, 0, 0)
+                       # instead of (255, 255, 255, 0)
                     for rgba in img.getdata()
                     for byte in rgba
                 )
         else:
-            with open(self.file_path, "rb") as f:
-                data = f.read()
+            with open(self.file_path, "rb") as asset_file:
+                data = asset_file.read()
 
         md5sum = self.md5sum_of_file()
         with self.md5sum_path.open("wb") as md5sum_file:
             md5sum_file.write(md5sum)
 
-        logging.info(f"Compressing {self.filename}...")
+        logging.info("Compressing %s...", self.filename)
         cctx = zstd.ZstdCompressor(level=compression_level)
         data = cctx.compress(data)
         with open(self.compressed_path, "wb") as compressed_file:

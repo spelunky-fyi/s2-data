@@ -49,7 +49,7 @@ def main():
         asset.filename = filename
         seen[asset.name_hash] = asset
 
-        filepath = Path(filename.decode())
+        Path(filename.decode())
         asset.load_data(args.exe)
 
     def extract_single(asset):
