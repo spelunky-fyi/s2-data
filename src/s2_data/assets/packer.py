@@ -8,10 +8,10 @@ from pathlib import Path
 from .assets import AssetStore, MissingAsset
 from .patcher import Patcher
 
+EXTRACTED_DIR = Path("Extracted")
+OVERRIDES_DIR = Path("Overrides")
 
 def main():
-
-
     parser = argparse.ArgumentParser(description="Extract Spelunky 2 Assets.")
 
     parser.add_argument(
@@ -19,6 +19,11 @@ def main():
         type=str,
         default="Mods",
         help="Path to directory containing mods.",
+    )
+    parser.add_argument(
+        "--pack-dir",
+        action="append",
+        help="Path to directory of mod pack to pack. Can be passed multiple times.",
     )
     parser.add_argument(
         "--compression-level",
@@ -55,10 +60,17 @@ def main():
     print(f"Making copy of {args.source.name} to {args.dest}")
     shutil.copy2(args.source.name, args.dest)
 
+    search_dirs = []
+    for search_dir in args.pack_dir:
+        search_dirs.append(Path(search_dir).relative_to(args.mods_dir))
+    search_dirs.append(OVERRIDES_DIR)
+    print(search_dirs)
+
+
     with open(args.dest, "rb+") as dest_file:
         asset_store = AssetStore.load_from_file(dest_file)
         try:
-            asset_store.repackage(Path(args.mods_dir), args.compression_level)
+            asset_store.repackage(Path(args.mods_dir), search_dirs, EXTRACTED_DIR, args.compression_level)
         except MissingAsset as err:
             print("")
             print(f"Failed to find expected asset: {err}. Unabled to proceed...")

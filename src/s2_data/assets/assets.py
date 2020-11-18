@@ -2,7 +2,12 @@ import binascii
 import hashlib
 import io
 import logging
+import os
+from collections import defaultdict
+from concurrent.futures import wait
+from concurrent.futures.thread import ThreadPoolExecutor
 from dataclasses import dataclass
+from enum import Enum
 from pathlib import Path
 from struct import pack, unpack
 
@@ -10,12 +15,13 @@ import zstandard as zstd
 from PIL import Image
 
 from .chacha import Key, chacha, filename_hash
-from .known_assets import KNOWN_ASSETS
+from .known_assets import IMAGES_DONT_CONVERT, KNOWN_ASSETS
 
 EXTRACTED_DIR = Path("Extracted")
 OVERRIDES_DIR = Path("Overrides")
 DEFAULT_COMPRESSION_LEVEL = 20
 BANK_ALIGNMENT = 32
+
 
 class MissingAsset(Exception):
     """Returned when an expected asset is missing."""
@@ -68,12 +74,12 @@ class Asset(object):
         handle.seek(self.data_offset)
         self.data = handle.read(self.data_size)
 
-    def extract(self, dest_path, key, compression_level=DEFAULT_COMPRESSION_LEVEL):
+    def extract(self, mods_dir, dest_path, key, compression_level=DEFAULT_COMPRESSION_LEVEL):
         if self.data is None:
             raise RuntimeError("load_data hasn't been called.")
 
-        path = dest_path
-        compressed_path = dest_path / ".compressed"
+        path = mods_dir / dest_path
+        compressed_path = mods_dir / ".compressed" / dest_path
         filepath = path / self.filename.decode()
         compressed_filepath = compressed_path / f"{self.filename.decode()}.zst"
         md5sum_filepath = compressed_path / f"{self.filename.decode()}.md5sum"
@@ -96,14 +102,15 @@ class Asset(object):
                     compressed_data = cctx.compress(self.data)
                     compressed_file.write(compressed_data)
 
-            except Exception as exc:  # pylint: disable=broad-except
-                logging.error(exc)
+            except Exception:  # pylint: disable=broad-except
+                logging.exception("Failed compression")
                 return None
 
 
-        if filepath.suffix == ".png":
-            width, height = unpack(b"<II", self.data[:8])
-            image = Image.frombytes("RGBA", (width, height), self.data[8:], "raw")
+        if filepath.suffix == ".DDS" and self.filename not in IMAGES_DONT_CONVERT:
+            image = Image.open(io.BytesIO(self.data))
+            # Swap byte order to read correct endianness
+            image.tile[0] = image.tile[0][:-1] + ((image.tile[0][-1][0][::-1], 0, 1),)
             new_data = io.BytesIO()
             image.save(new_data, format="PNG")
             self.data = new_data.getvalue()
@@ -115,6 +122,9 @@ class Asset(object):
             md5sum_file.write(md5sum)
 
         logging.info("Storing asset %s...", filepath)
+        if filepath.suffix == ".DDS" and self.filename not in IMAGES_DONT_CONVERT:
+            filepath = filepath.with_suffix(".png")
+
         with filepath.open("wb") as asset_file:
             asset_file.write(self.data)
 
@@ -229,18 +239,22 @@ class AssetStore(object):
                 continue
             asset.filename = filename
 
-    def repackage(self, mods_dir, compression_level=DEFAULT_COMPRESSION_LEVEL):
+    def repackage(
+        self, mods_dir, search_dirs, extracted_dir,
+        compression_level=DEFAULT_COMPRESSION_LEVEL
+    ):
         self.populate_asset_names()
+        asset_bundle = AssetBundle.from_dirs(self, Path(mods_dir), search_dirs, extracted_dir)
+        asset_bundle.compress(compression_level=compression_level)
 
         offset = self.DATA_OFFSET
         for asset in self.assets:
             if asset.filename is None:
                 continue
-            asset_data = AssetData.from_filename(mods_dir, asset.filename.decode(), asset.encrypted)
+            asset_data = asset_bundle.get(str(Path(asset.filename.decode()).name))
             if asset_data is None:
-                raise MissingAsset(asset.filename.decode())
-            if asset_data.needs_compression():
-                asset_data.compress(compression_level)
+                raise MissingAsset(f"FAIL {asset.filename.decode()}")
+
             asset.asset_data = asset_data
 
             asset.offset = offset
@@ -264,11 +278,177 @@ class AssetStore(object):
         self.pack_assets()
 
 
+class ResolutionPolicy(Enum):
+    RaiseError = 1
+    FirstWins = 2
+    LastWins = 3
+
+
+class FileConflict(Exception):
+    pass
+
+
+class MultipleMatchingAssets(Exception):
+    pass
+
+
+KNOWN_ASSET_NAMES = {
+    Path(path.decode()).name: path.decode()
+    for path in KNOWN_ASSETS
+}
+
+
+def get_files_from_search_dir(mods_dir, search_dir):
+    out_files = {}
+
+    search_dir = mods_dir / search_dir
+    if not search_dir.exists():
+        return out_files
+
+    for root, dirs, files in os.walk(search_dir, topdown=True):
+        dirs[:] = [d for d in dirs if d not in [".compressed"]]
+
+        for file_ in files:
+            real_name = file_
+            if Path(file_).suffix == ".png":
+                real_name = str(Path(file_).with_suffix(".DDS"))
+
+            if real_name not in KNOWN_ASSET_NAMES:
+                continue
+
+            if file_ in out_files:
+                MultipleMatchingAssets(f"Found {file_} multiple times in {search_dir}")
+            out_files[file_] = (
+                search_dir.relative_to(mods_dir),
+                (Path(root) / file_).relative_to(search_dir)
+            )
+
+    return out_files
+
+
+def to_dds(img):
+    img = img.convert("RGBA")
+
+    # https://docs.microsoft.com/en-us/windows/win32/direct3ddds/dds-header
+    header_size = 124  # always the same
+    flags = 0x0002100F  # required flags + pitch + mipmapped
+
+    height = img.height
+    width = img.width
+
+    pitch = width * 4  # bytes per line
+    depth = 1
+    mipmaps = 1
+
+    # pixel format sub structure
+    pfsize = 32  # size of pixel format structure, constant
+    pfflags = 0x41  # uncompressed RGB with alpha channel
+    fourcc = 0  # compression mode (not used for uncompressed data)
+    bitcount = 32
+    # bit masks for each channel, here for RGBA
+    rmask = 0xFF000000
+    gmask = 0x00FF0000
+    bmask = 0x0000FF00
+    amask = 0x000000FF
+
+    caps = 0x1000  # simple texture with only one surface and no mipmaps
+    caps2 = 0  # additional surface data, unused
+    caps3 = 0  # unused
+    caps4 = 0  # unused
+
+    data = b"DDS "  # magic bytes
+    data += pack("<II", header_size, flags)
+    data += pack("<5I", height, width, pitch, depth, mipmaps)
+    data += pack("<11I", *((0,)*11))  # reserved
+    data += pack("<4I", pfsize, pfflags, fourcc, bitcount)
+    data += pack(">4I", rmask, gmask, bmask, amask)  # masks are stored in big endian
+    data += pack("<4I", caps, caps2, caps3, caps4)
+    data += pack("<I", 0)  # reserved
+
+    data += bytes(
+        (
+            byte if rgba[3] != 0 else 0
+        )  # Hack to force all transparent pixels to be (0, 0, 0, 0)
+           # instead of (255, 255, 255, 0)
+        for rgba in img.getdata()
+        for byte in rgba
+    )
+
+    return data
+
+
+@dataclass
+class AssetBundle:
+    def __init__(self, asset_datas):
+        self.asset_datas = asset_datas
+
+    def get(self, key, default=None):
+        return self.asset_datas.get(key, default)
+
+    @classmethod
+    def from_dirs(
+        cls, asset_store, mods_dir, search_dirs, fallback_dir,
+        resolution_policy=ResolutionPolicy.RaiseError
+    ):
+
+        pack_assets = defaultdict(list)
+        asset_datas = {}
+
+        for search_dir in search_dirs:
+            for (file_, file_paths) in get_files_from_search_dir(mods_dir, search_dir).items():
+                pack_assets[file_].append(file_paths)
+
+        for asset in asset_store.assets:
+            if asset.filename is None:
+                continue
+            filename = Path(asset.filename.decode())
+            if filename.suffix == ".DDS" and asset.filename not in IMAGES_DONT_CONVERT:
+                filename = filename.with_suffix(".png")
+            assets = pack_assets.get(filename.name)
+
+            if not assets:
+                file_path = mods_dir / fallback_dir / filename
+                if not file_path.exists():
+                    raise MissingAsset(f"Didn't find an asset for {file_path}")
+
+                asset_datas[str(Path(asset.filename.decode()).name)] = AssetData(
+                    mods_dir, fallback_dir, filename, asset
+                )
+                continue
+
+            if resolution_policy == ResolutionPolicy.RaiseError and len(assets) >= 2:
+                raise FileConflict(
+                    f"{filename} found in multiple packs: {', '.join(assets)}"
+                )
+
+            idx = 0
+            if resolution_policy == ResolutionPolicy.FirstWins:
+                idx = 0
+            elif resolution_policy == ResolutionPolicy.LastWins:
+                idx = -1
+
+            search_dir, filename_ = assets[idx]
+            asset_datas[str(Path(asset.filename.decode()).name)] = AssetData(
+                mods_dir, search_dir, filename_, asset
+            )
+
+        return cls(asset_datas)
+
+    def compress(self, compression_level=DEFAULT_COMPRESSION_LEVEL):
+        pool = ThreadPoolExecutor()
+        futures = [
+            pool.submit(asset_data.compress, compression_level)
+            for asset_data in self.asset_datas.values()
+            if asset_data.needs_compression()
+        ]
+        wait(futures, timeout=300)
+
 @dataclass
 class AssetData:
+    mods_dir: Path
     path: Path
     filename: str
-    encrypted: bool
+    asset: Asset
 
     def md5sum_of_file(self):
         with self.file_path.open("rb") as file_:
@@ -279,37 +459,34 @@ class AssetData:
                 chunk = file_.read(8192)
             return md5sum.hexdigest().encode()
 
-    @classmethod
-    def from_filename(cls, mods_dir, filename, encrypted):
-        for path in [OVERRIDES_DIR, EXTRACTED_DIR]:
-            path = mods_dir / path
-            file_path = path / filename
-            if not file_path.exists():
-                continue
-            return cls(path, filename, encrypted)
+    @property
+    def real_suffix(self):
+        if self.filename.suffix == ".png" and self.asset.filename not in IMAGES_DONT_CONVERT:
+            return ".DDS"
+        return self.filename.suffix
 
     @property
     def file_path(self):
-        return self.path / self.filename
+        return self.mods_dir /self.path / self.filename
 
     @property
     def compressed_name(self):
-        return f"{self.filename}.zst"
+        return f"{self.filename.with_suffix(self.real_suffix)}.zst"
 
     @property
     def compressed_path(self):
-        return self.path / ".compressed" / self.compressed_name
+        return self.mods_dir / ".compressed" / self.path / self.compressed_name
 
     @property
     def md5sum_name(self):
-        return f"{self.filename}.md5sum"
+        return f"{self.filename.with_suffix(self.real_suffix)}.md5sum"
 
     @property
     def md5sum_path(self):
-        return self.path / ".compressed" / self.md5sum_name
+        return self.mods_dir / ".compressed" / self.path / self.md5sum_name
 
     def needs_compression(self):
-        if not self.encrypted:
+        if not self.asset.encrypted:
             return False
 
         if not self.md5sum_path.exists():
@@ -327,21 +504,16 @@ class AssetData:
         return False
 
     def compress(self, compression_level=DEFAULT_COMPRESSION_LEVEL):
-        if not self.encrypted:
+        if not self.asset.encrypted:
             return
 
+        self.compressed_path.parent.mkdir(parents=True, exist_ok=True)
+        self.md5sum_path.parent.mkdir(parents=True, exist_ok=True)
+
         if self.file_path.suffix == ".png":
-            logging.info('Converting image "%s" to RGBA array', self.filename)
+            logging.info('Converting image "%s" to DDS', self.filename)
             with Image.open(self.file_path) as img:
-                img = img.convert("RGBA")
-                data = pack("<II", img.width, img.height) + bytes(
-                    (
-                        byte if rgba[3] != 0 else 0
-                    )  # Hack to force all transparent pixels to be (0, 0, 0, 0)
-                       # instead of (255, 255, 255, 0)
-                    for rgba in img.getdata()
-                    for byte in rgba
-                )
+                data = to_dds(img)
         else:
             with open(self.file_path, "rb") as asset_file:
                 data = asset_file.read()
@@ -357,14 +529,14 @@ class AssetData:
             compressed_file.write(data)
 
     def get_data_size(self):
-        if self.encrypted:
+        if self.asset.encrypted:
             path = self.compressed_path
         else:
             path = self.file_path
         return path.stat().st_size
 
     def get_data(self):
-        if self.encrypted:
+        if self.asset.encrypted:
             path = self.compressed_path
         else:
             path = self.file_path

@@ -1,13 +1,12 @@
+import argparse
 import binascii
 import logging
 from concurrent.futures import ThreadPoolExecutor, wait
 from pathlib import Path
 
-from .assets import EXTRACTED_DIR, KNOWN_ASSETS, OVERRIDES_DIR, AssetStore
+from .assets import EXTRACTED_DIR, KNOWN_ASSETS, AssetStore
 
-DEFAULT_DIR = Path("Mods")
-EXTRACTED_DIR = DEFAULT_DIR / EXTRACTED_DIR
-OVERRIDES_DIR = DEFAULT_DIR / OVERRIDES_DIR
+DEFAULT_MODS_DIR = "Mods"
 
 DIRS = [
     "Data/Fonts",
@@ -17,12 +16,14 @@ DIRS = [
 
 
 def main():
-    import argparse
 
     parser = argparse.ArgumentParser(description="Extract Spelunky 2 Assets.")
     parser.add_argument("exe", type=argparse.FileType("rb"), help="Path to Spel2.exe")
+    parser.add_argument("--mods-dir", default=DEFAULT_MODS_DIR)
 
     args = parser.parse_args()
+
+    mods_dir = Path(args.mods_dir)
 
     logging.basicConfig(format="%(levelname)s - %(message)s", level=logging.INFO)
 
@@ -30,11 +31,11 @@ def main():
     seen = {}
 
     # Make all directories for extraction and overrides
+    (mods_dir / "Packs").mkdir(parents=True, exist_ok=True)
+    (mods_dir / "Overrides").mkdir(parents=True, exist_ok=True)
     for dir_ in DIRS:
-        (EXTRACTED_DIR / dir_).mkdir(parents=True, exist_ok=True)
-        (EXTRACTED_DIR / ".compressed" / dir_).mkdir(parents=True, exist_ok=True)
-        (OVERRIDES_DIR / dir_).mkdir(parents=True, exist_ok=True)
-        (OVERRIDES_DIR / ".compressed" / dir_).mkdir(parents=True, exist_ok=True)
+        (mods_dir / EXTRACTED_DIR / dir_).mkdir(parents=True, exist_ok=True)
+        (mods_dir / ".compressed" / EXTRACTED_DIR / dir_).mkdir(parents=True, exist_ok=True)
 
     for filename in KNOWN_ASSETS:
         asset = asset_store.find_asset(filename)
@@ -55,13 +56,15 @@ def main():
     def extract_single(asset):
         try:
             logging.info("Extracting %s... ", asset.filename.decode())
-            asset.extract(EXTRACTED_DIR, asset_store.key)
-        except Exception as err:
-            logging.error(err)
+            asset.extract(mods_dir, EXTRACTED_DIR, asset_store.key)
+        except Exception:
+            logging.exception("Failed Extraction")
 
     pool = ThreadPoolExecutor()
     futures = [pool.submit(extract_single, asset) for asset in seen.values()]
     wait(futures, timeout=300)
+    #for asset in seen.values():
+    #    extract_single(asset)
 
     for asset in sorted(asset_store.assets, key=lambda a: a.offset):
         name_hash = asset_store.filename_hash(asset.filename)
