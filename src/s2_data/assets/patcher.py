@@ -31,13 +31,19 @@ class Patcher:
 
         self.exe_handle.seek(offset)
         overlap = len(needle) - 1
+
         while True:
             buffer = self.exe_handle.read(bsize)
+            if not buffer:
+                return -1
+
             pos = buffer.find(needle)
             if pos >= 0:
                 return self.exe_handle.tell() - len(buffer) + pos
-            if not buffer:
+
+            if len(buffer) <= overlap:
                 return -1
+
             self.exe_handle.seek(self.exe_handle.tell() - overlap)
 
     def patch(self):
@@ -52,7 +58,8 @@ class Patcher:
 
         if ops[-1] != PATCH_END:
             logging.warning(
-                "Checksum check has unexpected form, this script has to be updated for the current game version."
+                "Checksum check has unexpected form, this script has "
+                "to be updated for the current game version."
             )
             logging.warning("(Expected 0x{:02x}, found 0x{:02x})".format(PATCH_END, ops[-1]))
             return False
