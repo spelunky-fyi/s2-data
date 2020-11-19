@@ -2,6 +2,7 @@ KNOWN_ASSETS = [
     b"Data/Fonts/fontdebug.fnb",
     b"Data/Fonts/fontfirasans.fnb",
     b"Data/Fonts/fontmono.fnb",
+    b"Data/Fonts/fontnewrodin.fnb",
     b"Data/Fonts/fontyorkten.fnb",
     b"Data/Levels/abzu.lvl",
     b"Data/Levels/Arena/dm1-1.lvl",
@@ -182,6 +183,7 @@ KNOWN_ASSETS = [
     b"Data/Textures/fontdebug.DDS",
     b"Data/Textures/fontfirasans.DDS",
     b"Data/Textures/fontmono.DDS",
+    b"Data/Textures/fontnewrodin.DDS",
     b"Data/Textures/fontyorkten.DDS",
     b"Data/Textures/fx_ankh.DDS",
     b"Data/Textures/fx_big.DDS",
@@ -296,5 +298,6 @@ IMAGES_DONT_CONVERT = set([
     b"Data/Textures/fontdebug.DDS",
     b"Data/Textures/fontfirasans.DDS",
     b"Data/Textures/fontmono.DDS",
+    b"Data/Textures/fontnewrodin.DDS",
     b"Data/Textures/fontyorkten.DDS",
 ])
