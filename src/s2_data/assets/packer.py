@@ -23,6 +23,7 @@ def main():
     parser.add_argument(
         "--pack-dir",
         action="append",
+        default=[],
         help="Path to directory of mod pack to pack. Can be passed multiple times.",
     )
     parser.add_argument(
@@ -64,8 +65,6 @@ def main():
     for search_dir in args.pack_dir:
         search_dirs.append(Path(search_dir).relative_to(args.mods_dir))
     search_dirs.append(OVERRIDES_DIR)
-    print(search_dirs)
-
 
     with open(args.dest, "rb+") as dest_file:
         asset_store = AssetStore.load_from_file(dest_file)
