@@ -45,9 +45,10 @@ class IntType(Type):
         return value.to_bytes(length=self.size, byteorder='little', signed=self.signed)
 
 
-Int64Type = IntType(size=8, signed=True)
+UInt8Type = IntType(size=1, signed=False)
 UInt32Type = IntType(size=4, signed=False)
 Int32Type = IntType(size=4, signed=True)
+Int64Type = IntType(size=8, signed=True)
 
 
 class ByteType(Type):
