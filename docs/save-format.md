@@ -25,6 +25,7 @@ https://mossranking.com/discord
  * bool    - 1 Byte. 0x0 or 0x1
  * int     - 32 bit Integer. Little Endian
  * int64   - 64 bit Integer. Little Endian
+ * uint8   - 8 bit Integer. Unsigned
  * float   - 32 bit Float. Little Endian
  * time    - 32 bit Integer. Multiply by 16.67 to get milliseconds.
  * time64  - 64 bit Integer. Multiply by 16.67 to get milliseconds.
@@ -721,6 +722,18 @@ cba: int - 2-4
 28e6: int - Classic Spelunky
 ```
 
+## Damsels - Rescues
+
+The amount of times each damsel has been rescued. Max stored value is 255.
+
+Once the rescue count is more than or equal to 100 that damsel will appear in the camp.
+
+```
+28ea: uint8 - Monty
+28eb: uint8 - Percy
+28ec: uint8 - Poochi
+```
+
 ## Completion
 
 Booleans marking how you've beaten the game. Changes the appearance of the entrance.
@@ -910,11 +923,6 @@ Example:
 # Raw Data
 
 ```md
-
-
-# Damsels Rescued
-0x28ea through 0x28ec tracks damsels of each type rescued across all playthroughs, including seeded runs. Goes in the same order as options (dog, cat, hamster). Above a certain value (untested) it causes pets to always appear in camp. It seems pets can also appear regardless of this value if your camp is big enough but without that many characters unlocked.
-
 
 # Best Tutorial Time
 0xd6 is the best tutorial time record (seconds * 60)(edited)
