@@ -27,38 +27,28 @@ class BoolType(Type):
     def to_binary(self, value):
         return bytes([1 if value != 0 else 0])
 
-class Int32Type(Type):
+
+class IntType(Type):
+    def __init__(self, size, signed):
+        self._size = size
+        self.signed = signed
+
     @property
     def size(self):
-        return 4
+        return self._size
 
     def from_binary(self, binary):
-        return int.from_bytes(binary, byteorder='little', signed=True)
+        assert len(binary) == self.size
+        return int.from_bytes(binary, byteorder='little', signed=self.signed)
 
     def to_binary(self, value):
-        return value.to_bytes(length=self.size, byteorder='little', signed=True)
+        return value.to_bytes(length=self.size, byteorder='little', signed=self.signed)
 
-class UInt32Type(Type):
-    @property
-    def size(self):
-        return 4
 
-    def from_binary(self, binary):
-        return int.from_bytes(binary, byteorder='little', signed=False)
+Int64Type = IntType(size=8, signed=True)
+UInt32Type = IntType(size=4, signed=False)
+Int32Type = IntType(size=4, signed=True)
 
-    def to_binary(self, value):
-        return value.to_bytes(length=self.size, byteorder='little', signed=False)
-
-class Int64Type(Type):
-    @property
-    def size(self):
-        return 8
-
-    def from_binary(self, binary):
-        return int.from_bytes(binary, byteorder='little', signed=True)
-
-    def to_binary(self, value):
-        return value.to_bytes(length=self.size, byteorder='little', signed=True)
 
 class ByteType(Type):
     @property
