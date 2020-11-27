@@ -7,6 +7,17 @@ import zlib
 from s2_data import field_descriptors
 
 
+def is_save(save_data):
+    return (
+        len(save_data) == 13726 and
+        save_data[0:2] == b'\x19\x00')
+
+
+def ensure_is_save(save):
+    if not is_save(save):
+        raise ValueError('Argument is not a valid Spelunky 2 save.')
+
+
 def field_range(descriptor):
     field_start = descriptor.offset
     field_end = descriptor.offset + descriptor.type.size
@@ -43,6 +54,7 @@ def fixup_crc():
     crc_descriptor = field_descriptors['crc'].fields['crc']
     with io.open(sys.argv[1], 'rb') as save_file:
         save = bytearray(save_file.read())
+        ensure_is_save(save)
         current_crc = read_field(save, crc_descriptor)
 
     # Spelunky 2 needs a 32bit bitnot operation applied to the crc32.
