@@ -24,38 +24,9 @@ Once you have python installed you can open `cmd` and run the following:
 pip install --upgrade s2-data
 ```
 
-## Modding
-
-> :warning: This currently only works on version 1.14+ of Spelunky 2. You'll want to have at least version 0.17 of `s2-data` for 1.15+ of Spelunky 2.
-
-Once installed you should have two binaries related to modding. `s2-asset-extract` and `s2-asset-pack`. You can then use the following sections for instructions on extracting, modifying, and repacking the assets.
-
-### Extraction
-
-```console
-> cd "C:\Program Files (x86)\Steam\steamapps\common\Spelunky 2"
-> copy Spel2.exe Spel2-orig.exe
-> s2-asset-extract Spel2-orig.exe
-```
-
-This will made a directory called `Mods` that has an `Extracted` and `Overrides` directory in it. All of the assets that were extracted from the binary will be in `Extracted`. This directory should be considered read-only for the purposes of modding but you have access to all assets in there for reference. The `Overrides` directory has the same directory layout as `Extracted` but is otherwise empty. This is where you would put files for repacking in the next step.
-
-### Repacking
-
-Repacking expects the directory structure from the extraction step above. It will first check the `Overrides` directory for any files and prefer them when repacking the binary. Any assets you want to override should go in the `Overrides` directory, matching the layout and name of the file from the `Extracted` directory.
-
-```console
-> cd "C:\Program Files (x86)\Steam\steamapps\common\Spelunky 2"
-> s2-asset-pack Spel2-orig.exe Spel2.exe
-```
-
 ## Development
 
-If you'd like to contribute to s2-data here are some steps to setup your environment.
-
-## Development
-
-If you'd like to contribute to `modlunky2` here are some steps to setup your environment.
+If you'd like to contribute to `s2-data` here are some steps to setup your environment.
 
 ### VirtualEnv
 
