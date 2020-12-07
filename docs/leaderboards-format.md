@@ -25,7 +25,7 @@ Note: The first 2 entries in each array appear to always be empty.
 
 | Offset | Type | Notes |
 | ------ | ---- | ----- |
-| 0000010 | uint64 LE | Steam / PSN IDs |
+| 0000010 | uint64 LE | Unique ID for the entry |
 | 07A1208 | 33 bytes. Fixed width string buffer. utf-8 | Usernames |
 | 2719C48 | 2 bytes | Unknown
 | 29020D0 | 4 bytes | Unknown
