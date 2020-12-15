@@ -7,9 +7,9 @@ Repository for documenting and interacting with various formats for Spelunky 2.
 Currently we have documents for the following:
   * [Save Format](docs/save-format.md)
   * [Leaderboards Format](docs/leaderboards-format.md)
-  
+
 as well as libraries for asset extraction and repacking.
-  
+
 ## Installation
 
 You'll need to have [Python 3.7 or 3.8](https://www.python.org/downloads/) installed to install these tools. Make sure when you're installing Python that you click the checkbox to add Python to your `PATH`:
