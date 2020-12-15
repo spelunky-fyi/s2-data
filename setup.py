@@ -1,5 +1,5 @@
-from setuptools import setup, find_packages
 import pathlib
+from setuptools import setup, find_packages
 
 HERE = pathlib.Path(__file__).parent.resolve()
 LONG_DESCRIPTION = (HERE / 'README.md').read_text(encoding='utf-8')
@@ -71,8 +71,8 @@ setup(
     # executes the function `main` from this package when invoked:
     entry_points={  # Optional
         'console_scripts': [
-            's2save-to-text=s2_data.command_line:to_text',
-            's2-save-fixup-crc=s2_data.command_line:fixup_crc',
+            's2-save-to-text=s2_data.saves.cli:to_text',
+            's2-save-fixup-crc=s2_data.saves.cli:fixup_crc',
         ],
     },
     include_package_data = True,

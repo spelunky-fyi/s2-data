@@ -1,9 +1,9 @@
-import s2_data
-import re
 import os
-from unittest import TestCase, main
+import re
 from itertools import chain
+from unittest import TestCase, main
 
+import s2_data
 
 dict_key_regex = re.compile('^[a-z][a-z0-9_]*$')
 save_game_path = os.path.join(

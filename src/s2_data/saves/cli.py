@@ -4,7 +4,7 @@ import io
 import sys
 import zlib
 
-from s2_data import field_descriptors
+from s2_data.saves import field_descriptors
 
 
 def is_save(save_data):
@@ -39,10 +39,10 @@ def to_text():
     with io.open(sys.argv[1], 'rb') as save_file:
         save = save_file.read()
 
-        for category_key, category in field_descriptors.items():
+        for category in field_descriptors.values():
             print('##', category.name, end='\n\n')
 
-            for dkey, descriptor in category.fields.items():
+            for descriptor in category.fields.values():
                 value = read_field(save, descriptor)
 
                 print(f'{descriptor.name:30} =', value)

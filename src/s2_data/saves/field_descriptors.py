@@ -2,7 +2,8 @@ import typing
 from dataclasses import dataclass
 from enum import IntEnum, IntFlag
 
-from .field_types import *
+from .field_types import (BoolType, ByteType, EnumType, FlagType, Int32Type,
+                          Int64Type, Type, UInt8Type, UInt32Type)
 
 
 class CharacterUnlockFlags(IntFlag):
