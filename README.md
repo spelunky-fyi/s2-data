@@ -12,14 +12,6 @@ as well as libraries for asset extraction and repacking.
 
 ## Installation
 
-You'll need to have [Python 3.7 or 3.8](https://www.python.org/downloads/) installed to install these tools. Make sure when you're installing Python that you click the checkbox to add Python to your `PATH`:
-
-![Add Python to PATH](https://cdn.discordapp.com/attachments/756241793753809106/771016197424152576/0001_add_Python_to_Path.png).
-
-If you've already installed Python without doing this you can either re-install or follow the instructions at this site: https://datatofish.com/add-python-to-windows-path/
-
-Once you have python installed you can open `cmd` and run the following:
-
 ```console
 pip install --upgrade s2-data
 ```
@@ -38,17 +30,6 @@ In the root directory you can make a virtualenv. It will be excluded from commit
 python -m venv venv
 ```
 Whenever developing the project you'll want to activate the virtualenv in your terminal. This is platform dependent and there are more comprehensive docs available here: https://docs.python.org/3/library/venv.html
-
-> :warning: If you're using PowerShell on Windows you might need to run `Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser`. More information on execution policy is available in the link above.
-
-| Platform | Shell           | Command to activate virtual environment |
-|----------|-----------------|-----------------------------------------|
-| POSIX    | bash/zsh        | $ source <venv>/bin/activate            |
-|          | fish            | $ source <venv>/bin/activate.fish       |
-|          | csh/tcsh        | $ source <venv>/bin/activate.csh        |
-|          | PowerShell Core | $ <venv>/bin/Activate.ps1               |
-| Windows  | cmd.exe         | C:\> <venv>\Scripts\activate.bat        |
-|          | PowerShell      | PS C:\> <venv>\Scripts\Activate.ps1     |
 
 
 ### Setup
