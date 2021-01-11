@@ -10,7 +10,7 @@ The data consists of what appears to be 7 aligned arrays of data. An index in on
 
 Note: The first 2 entries in each array appear to always be empty.
 
-# Save Format
+# Format
 
 A types specified below are in little endian byte order.
 
