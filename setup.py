@@ -73,6 +73,7 @@ setup(
         'console_scripts': [
             's2-save-to-text=s2_data.saves.cli:to_text',
             's2-save-fixup-crc=s2_data.saves.cli:fixup_crc',
+            's2-read-leaderboard=s2_data.leaderboards:main',
         ],
     },
     include_package_data = True,
