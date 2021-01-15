@@ -23,8 +23,8 @@ class Score:
     ending: int = None
     score: int = None
     level: int = None
+    block6: bytes = None
     block7: bytes = None
-    block8: bytes = None
 
 
 def get_scores(compressed_data_handle):
@@ -67,11 +67,11 @@ def get_scores(compressed_data_handle):
 
         reader.seek(BLOCK6_POSITION + 2 * 4)
         for idx in range(num_scores):
-            scores[idx].block7 = reader.read(4)
+            scores[idx].block6 = reader.read(4)
 
         reader.seek(BLOCK7_POSITION + 2 * 4)
         for idx in range(num_scores):
-            scores[idx].block8 = reader.read(4)
+            scores[idx].block7 = reader.read(4)
 
     return scores
 
