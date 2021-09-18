@@ -572,129 +572,17 @@ eb: byte
 
 ## Area - Death Count
 
+Provides death counts per level. Each area is technically 255 bytes. To get a levels death count you need do `area_offset + (level - 1) * 4`
+
 ```
-8b2: int - 1-1
-8b6: int - 1-2
-8ba: int - 1-3
-8be: int - 1-4
-
-cae: int - 2-1
-cb2: int - 2-2
-cb6: int - 2-3
-cba: int - 2-4
-
-10aa: int - 3-1
-
-14a6: int - 4-1
-14aa: int - 4-2
-14ae: int - 4-3
-14b2: int - 4-4
-
-18a2: int - 5-1
-
-1c9e: int - 6-1
-1ca2: int - 6-2
-1ca6: int - 6-3
-1caa: int - 6-4
-
-209a: int - 7-1
-209e: int - 7-2
-20a2: int - 7-3
-20a6: int - 7-4
-20aa: int - 7-5
-20ae: int - 7-6
-20b2: int - 7-7
-20b6: int - 7-8
-20ba: int - 7-9
-20be: int - 7-10
-20c2: int - 7-11
-20c6: int - 7-12
-20ca: int - 7-13
-20ce: int - 7-14
-20d2: int - 7-15
-20d6: int - 7-16
-20da: int - 7-17
-20de: int - 7-18
-20e2: int - 7-19
-20e6: int - 7-20
-20ea: int - 7-21
-20ee: int - 7-22
-20f2: int - 7-23
-20f6: int - 7-24
-20fa: int - 7-25
-20fe: int - 7-26
-2102: int - 7-27
-2106: int - 7-28
-210a: int - 7-29
-210e: int - 7-30
-2112: int - 7-31
-2116: int - 7-32
-211a: int - 7-33
-211e: int - 7-34
-2122: int - 7-35
-2126: int - 7-36
-212a: int - 7-37
-212e: int - 7-38
-2132: int - 7-39
-2136: int - 7-40
-213a: int - 7-41
-213e: int - 7-42
-2142: int - 7-43
-2146: int - 7-44
-214a: int - 7-45
-214e: int - 7-46
-2152: int - 7-47
-2156: int - 7-48
-215a: int - 7-49
-215e: int - 7-50
-2162: int - 7-51
-2166: int - 7-52
-216a: int - 7-53
-216e: int - 7-54
-2172: int - 7-55
-2176: int - 7-56
-217a: int - 7-57
-217e: int - 7-58
-2182: int - 7-59
-2186: int - 7-60
-218a: int - 7-61
-218e: int - 7-62
-2192: int - 7-63
-2196: int - 7-64
-219a: int - 7-65
-219e: int - 7-66
-21a2: int - 7-67
-21a6: int - 7-68
-21aa: int - 7-69
-21ae: int - 7-70
-21b2: int - 7-71
-21b6: int - 7-72
-21ba: int - 7-73
-21be: int - 7-74
-21c2: int - 7-75
-21c6: int - 7-76
-21ca: int - 7-77
-21ce: int - 7-78
-21d2: int - 7-79
-21d6: int - 7-80
-21da: int - 7-81
-21de: int - 7-82
-21e2: int - 7-83
-21e6: int - 7-84
-21ea: int - 7-85
-21ee: int - 7-86
-21f2: int - 7-87
-21f6: int - 7-88
-21fa: int - 7-89
-21fe: int - 7-90
-2202: int - 7-91
-2206: int - 7-92
-220a: int - 7-93
-220e: int - 7-94
-2212: int - 7-95
-2216: int - 7-96
-221a: int - 7-97
-221e: int - 7-98
+8b2:  int[255] - Area 1 (Dwelling)
+cae:  int[255] - Area 2 (Volcana/Jungle)
+10aa: int[255] - Area 3 (Olmec's Lair)
+14a6: int[255] - Area 4 (Temple/Tide Pool)
+18a2: int[255] - Area 5 (Ice Caves)
+1c9e: int[255] - Area 6 (Neo Babylon)
+209a: int[255] - Area 7 (Sunken City)
+2496: int[255] - Area 8 (Cosmic Ocean)  # Note CO starts at level 5 so the first 4 elements are unused.
 ```
 
 ## Character - Death Counts
