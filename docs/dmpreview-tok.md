@@ -33,8 +33,8 @@ of byte value to symbol is documented in the Tiles section below.
 * `0x16` - Spark Balls
 * `0x17` - Regen
 * `0x18` - Tubes
-* `0x19` - 
-* `0x1a` - 
+* `0x19` - Tree / Mushroom
+* `0x1a` - Top of tree (no symbol?)
 * `0xff` - Empty
 
 ## Rooms
