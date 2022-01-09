@@ -10,6 +10,8 @@ of byte value to symbol is documented in the Tiles section below.
 
 ![image](https://user-images.githubusercontent.com/231118/148674207-7d397a9e-f33f-469a-8a02-df4e6a039e73.png)
 
+* `0xff` - Empty
+-------------------------
 * `0x00` - Floor
 * `0x01` - Push Block
 * `0x02` - Crate
@@ -25,7 +27,7 @@ of byte value to symbol is documented in the Tiles section below.
 * `0x0c` - Conveyer Left
 * `0x0d` - Conveyer Right
 * `0x0e` - TNT
-* `0x0f` - Water / Lava (Liquid)
+* `0x0f` - Liquid (Water/Lava)
 * `0x10` - Crush Trap
 * `0x11` - Quick Sand (Down Arrow)
 * `0x12` - Ice
@@ -33,43 +35,53 @@ of byte value to symbol is documented in the Tiles section below.
 * `0x14` - Elevator
 * `0x15` - Lasers
 * `0x16` - Spark Balls
-* `0x17` - Regen
+* `0x17` - Regen Blocks
 * `0x18` - Tubes
 * `0x19` - Tree / Mushroom
-* `0x1a` - Top of tree (no symbol?)
-* `0xff` - Empty
+* `0x1a` - No Symbol (Placed at the tops of trees despite not having a sprite)
 
 ### Unused Small Tiles
+![image](https://user-images.githubusercontent.com/231118/148690712-acdcb037-ebf5-4df1-92e6-161fbd385478.png)
 
 These byte offsets wrap around to the smaller version of icon in the sprite sheet
 
-* `0x1b`
-* `0x1c`
-* `0x1d`
-* `0x1e`
-* `0x1f`
-* `0x20`
-* `0x21`
-* `0x22`
-* `0x23`
-* `0x24`
-* `0x25`
-* `0x26`
-* `0x27`
-* `0x28`
-* `0x29`
-* `0x2a`
-* `0x2b`
-* `0x2c`
-* `0x2d`
-* `0x2e`
-* `0x2f`
-* `0x30`
-* `0x31`
-* `0x32`
-* `0x33`
-* `0x34`
-* `0x35` - No symbol
+* `0x1b` - Floor
+* `0x1c` - Pushblock
+* `0x1d` - Crate
+* `0x1e` - Ladder
+* `0x1f` - Vine
+* `0x20` - Chain
+* `0x21` - Pole
+* `0x22` - Spikes
+* `0x23` - Ceiling Spikes
+* `0x24` - Bone Blocks
+* `0x25` - Spear Trap
+* `0x26` - Falling Platform
+* `0x27` - Conveyor Left
+* `0x28` - Conveyor Right
+* `0x29` - TNT
+* `0x2a` - Liquid (Water/Lava)
+* `0x2b` - Crush Trap
+* `0x2c` - Quick Sand
+* `0x2d` - Ice
+* `0x2e` - Spring
+* `0x2f` - Elevator
+* `0x30` - Lasers
+* `0x31` - Spark Balls
+* `0x32` - Regen Blocks
+* `0x33` - Tubes
+* `0x34` - Tree / Mushroom
+* `0x35` - No Symbol
+
+### Additional Usable Symbols
+
+![image](https://user-images.githubusercontent.com/231118/148691694-134dbd1c-7b44-4738-b1c0-fa94ffc30fab.png)
+
+Symbols for previews start at in `0x1536` in `menu_deathmatch5.png` and are `64x64`.
+There are two rows at `0x1664` and `0x1728` that can accomdate 27 additional symbols each.
+They would be indexed starting at byte value `0x36` and end at byte value `0x6b`.
+
+Note: Starting at `0x6c` you'll start pulling from used portions of the `menu_deathmatch5.png` spritesheet.
 
 ## Rooms
 
