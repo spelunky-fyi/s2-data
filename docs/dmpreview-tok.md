@@ -12,7 +12,7 @@ of byte value to symbol is documented in the Tiles section below.
 * `0x01` - Push Block
 * `0x02` - Crate
 * `0x03` - Ladder
-* `0x04` - 
+* `0x04` - Vines
 * `0x05` - 
 * `0x06` - 
 * `0x07` - Spikes
@@ -39,7 +39,7 @@ of byte value to symbol is documented in the Tiles section below.
 
 ## Rooms
 
-### Dwelling - Boneyard (Small)
+### Dwelling - Boneyard
 ```
 ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff
 ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff
@@ -58,7 +58,7 @@ ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff
 ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff
 ```
 
-### Dwelling - Ladders (Small)
+### Dwelling - Ladders
 ```
 ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff
 ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff
@@ -77,7 +77,7 @@ ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff
 ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff
 ```
 
-### Dwelling - The Boss Room (Large)
+### Dwelling - The Boss Room
 ```
 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
 00 ff ff ff ff ff ff ff ff ff ff ff ff ff 09 09 ff ff ff ff ff ff ff ff ff ff ff ff ff 00
@@ -96,7 +96,7 @@ ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff
 07 07 07 07 07 07 07 07 07 07 07 07 07 07 07 07 07 07 07 07 07 07 07 07 07 07 07 07 07 07
 ```
 
-### Dwelling - The Dig (Large)
+### Dwelling - The Dig
 ```
 00 00 00 00 00 00 00 00 00 00 00 ff ff ff ff ff ff ff ff 00 00 00 00 00 00 00 00 00 00 00
 00 00 ff ff ff 00 00 00 00 ff ff ff 03 ff ff ff ff 03 ff ff ff 00 00 00 00 ff ff ff 00 00
@@ -115,7 +115,7 @@ ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff
 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
 ```
 
-### Dwelling - Apartments (Large)
+### Dwelling - Apartments
 ```
 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
 00 00 ff ff 00 00 00 00 00 01 00 00 03 ff ff ff ff 03 00 00 01 00 00 00 00 00 ff ff 00 00
@@ -134,7 +134,7 @@ ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff
 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
 ```
 
-### Jungle - Vines (Small)
+### Jungle - Vines
 ```
 ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff
 ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff
@@ -153,7 +153,7 @@ ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff
 ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff
 ```
 
-### Jungle - 
+### Jungle - Ruins
 ```
 ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff
 ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff
@@ -172,7 +172,7 @@ ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff
 ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff
 ```
 
-### Jungle - 
+### Jungle - No Roots
 ```
 00 00 00 00 00 00 00 00 00 00 ff ff ff ff ff ff ff ff ff ff 00 00 00 00 00 00 00 00 00 00
 00 ff ff ff 00 00 ff ff ff 00 ff ff ff ff ff ff ff ff ff ff 00 ff ff ff 00 00 ff ff ff 00
@@ -191,7 +191,7 @@ ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff
 07 07 07 07 07 07 07 07 07 07 07 07 07 07 07 07 07 07 07 07 07 07 07 07 07 07 07 07 07 07
 ```
 
-### Jungle - 
+### Jungle - Tower to Heaven
 ```
 00 ff ff ff ff 04 ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff 04 ff ff ff ff 00
 00 ff ff ff ff 04 ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff 04 ff ff ff ff 00
@@ -210,7 +210,7 @@ ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff
 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
 ```
 
-### Jungle - 
+### Jungle - Prickly
 ```
 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
@@ -229,7 +229,7 @@ ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff
 00 00 00 19 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 19 00 00 00
 ```
 
-### Volcana -
+### Volcana - Treadmill
 ```
 ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff
 ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff
@@ -248,7 +248,7 @@ ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff
 ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff
 ```
 
-### Volcana -
+### Volcana - Precarious
 ```
 ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff
 ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff
@@ -267,7 +267,7 @@ ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff
 ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff
 ```
 
-### Volcana -
+### Volcana - Smelter
 ```
 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
 00 05 ff ff ff 00 ff ff ff ff 00 00 0f 0f 0f 0f 0f 0f 00 00 ff ff ff ff 00 ff ff ff 05 00
@@ -286,7 +286,7 @@ ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff
 0f 0f 0f 0f 0f 0f 0f 0f 0f 0f 0f 0f 0f 0f 0f 0f 0f 0f 0f 0f 0f 0f 0f 0f 0f 0f 0f 0f 0f 0f
 ```
 
-### Volcana -
+### Volcana - Scrapyard
 ```
 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
 00 00 00 00 05 ff ff 05 ff ff ff ff ff ff 05 05 ff ff ff ff ff ff 05 ff ff 05 00 00 00 00
@@ -305,7 +305,7 @@ ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff
 0f 0f 0f 0f 0f 0f 0f 0f 0f 0f 0f 0f 0f 0f 0f 0f 0f 0f 0f 0f 0f 0f 0f 0f 0f 0f 0f 0f 0f 0f
 ```
 
-### Volcana -
+### Volcana - Chained
 ```
 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
 00 ff ff ff 05 ff ff 05 ff ff 05 ff ff 05 ff ff 05 ff ff 05 ff ff 05 ff ff 05 ff ff ff 00
@@ -324,7 +324,7 @@ ff ff ff ff ff 00 00 00 ff ff ff ff ff ff ff ff ff ff ff ff ff ff 00 00 00 ff ff
 0f 0f 0f 0f 0f 0f 0f 0f 0f 0f 0f 0f 0f 0f 0f 0f 0f 0f 0f 0f 0f 0f 0f 0f 0f 0f 0f 0f 0f 0f
 ```
 
-### Tide Pool -
+### Tide Pool - Clam Bake
 ```
 ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff
 ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff
@@ -343,7 +343,7 @@ ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff
 ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff
 ```
 
-### Tide Pool -
+### Tide Pool - Barrier Reef
 ```
 ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff
 ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff
@@ -362,7 +362,7 @@ ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff
 ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff
 ```
 
-### Tide Pool -
+### Tide Pool - Pole Dance
 ```
 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
 00 ff ff ff 00 00 ff ff ff 00 ff ff ff ff ff ff ff ff ff ff 00 ff ff ff 00 00 ff ff ff 00
@@ -381,7 +381,7 @@ ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff
 07 07 07 07 07 07 07 07 07 07 07 07 07 07 07 07 07 07 07 07 07 07 07 07 07 07 07 07 07 07
 ```
 
-### Tide Pool -
+### Tide Pool - Two Houses
 ```
 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
 00 ff ff ff 00 00 ff ff ff 00 06 ff ff ff ff ff ff ff ff 06 00 ff ff ff 00 00 ff ff ff 00
@@ -400,7 +400,7 @@ ff ff ff ff ff ff ff ff ff ff 06 00 00 00 00 00 00 00 00 06 ff ff ff ff ff ff ff
 07 07 07 07 07 07 07 07 07 07 07 07 07 07 07 07 07 07 07 07 07 07 07 07 07 07 07 07 07 07
 ```
 
-### Tide Pool -
+### Tide Pool - Eight Treasures
 ```
 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ff ff 00 00 00 00 00 00 00 00 00 00 00 00 00 00
 00 ff ff ff ff ff ff ff ff ff ff ff ff 00 0f 0f 00 ff ff ff ff ff ff ff ff ff ff ff ff 00
@@ -419,7 +419,7 @@ ff ff ff ff ff ff ff ff ff ff 06 00 00 00 00 00 00 00 00 06 ff ff ff ff ff ff ff
 00 00 00 00 00 ff ff ff 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ff ff ff 00 00 00 00 00
 ```
 
-### Temple of Anubis -
+### Temple of Anubis - Roundabout
 ```
 ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff
 ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff
@@ -438,7 +438,7 @@ ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff
 ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff
 ```
 
-### Temple of Anubis -
+### Temple of Anubis - Pyramid
 ```
 ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff
 ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff
@@ -457,7 +457,7 @@ ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff
 ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff
 ```
 
-### Temple of Anubis -
+### Temple of Anubis - Burial Chamber
 ```
 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
 11 ff ff ff ff ff ff ff ff 00 09 09 09 09 10 10 09 09 09 09 00 ff ff ff ff ff ff ff ff 11
@@ -476,7 +476,7 @@ ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff
 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
 ```
 
-### Temple of Anubis -
+### Temple of Anubis - Grinder
 ```
 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
 00 00 00 00 ff ff ff ff 00 00 10 00 00 10 00 00 10 00 00 10 00 00 ff ff ff ff 00 00 00 00
@@ -495,7 +495,7 @@ ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff
 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
 ```
 
-### Temple of Anubis -
+### Temple of Anubis - Sandpit
 ```
 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
 11 ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff 11
@@ -514,7 +514,7 @@ ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff
 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ff ff 00 00 00 00 00 00 00 00 00 00 00 00 00 00
 ```
 
-### Ice Caves -
+### Ice Caves - Ice Box
 ```
 ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff
 ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff
@@ -533,7 +533,7 @@ ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff
 ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff
 ```
 
-### Ice Caves -
+### Ice Caves - Bounce House
 ```
 ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff
 ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff
@@ -552,7 +552,7 @@ ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff
 ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff
 ```
 
-### Ice Caves -
+### Ice Caves - Sprung
 ```
 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
 00 ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff 00
@@ -571,7 +571,7 @@ ff 13 ff ff 00 ff ff ff ff ff ff ff ff 13 ff ff 13 ff ff ff ff ff ff ff ff 00 ff
 07 07 07 07 07 07 07 07 07 07 07 07 07 07 07 07 07 07 07 07 07 07 07 07 07 07 07 07 07 07
 ```
 
-### Ice Caves -
+### Ice Caves - The Platform
 ```
 12 12 12 12 12 12 12 12 12 12 12 12 00 00 00 00 00 00 12 12 12 12 12 12 12 12 12 12 12 12
 12 ff ff ff 12 12 ff ff ff 12 ff ff ff ff ff ff ff ff ff ff 12 ff ff ff 12 12 ff ff ff 12
@@ -590,7 +590,7 @@ ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff
 07 07 07 07 07 07 07 07 07 07 07 07 07 07 07 07 07 07 07 07 07 07 07 07 07 07 07 07 07 07
 ```
 
-### Ice Caves -
+### Ice Caves - Forgotten God
 ```
 ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff
 12 ff ff ff ff ff 12 12 12 12 12 12 ff ff ff ff ff ff 12 12 12 12 12 12 ff ff ff ff ff 12
@@ -609,7 +609,7 @@ ff ff 12 ff 13 ff ff ff 12 12 13 ff ff 12 12 12 12 ff ff 13 12 12 ff ff ff 13 ff
 00 00 00 00 00 00 00 12 12 12 12 00 12 12 12 12 12 12 00 12 12 12 12 00 00 00 00 00 00 00
 ```
 
-### Neo Babylon -
+### Neo Babylon - Zap Cage
 ```
 ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff
 ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff
@@ -628,7 +628,7 @@ ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff
 ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff
 ```
 
-### Neo Babylon -
+### Neo Babylon - Fungal
 ```
 ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff
 ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff
@@ -647,7 +647,7 @@ ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff
 ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff
 ```
 
-### Neo Babylon -
+### Neo Babylon - Holy Mountain
 ```
 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
 00 00 ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff 00 00
@@ -666,7 +666,7 @@ ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff
 14 00 00 00 00 00 00 00 15 00 00 00 00 00 14 14 00 00 00 00 00 15 00 00 00 00 00 00 00 14
 ```
 
-### Neo Babylon -
+### Neo Babylon - Neo City
 ```
 15 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 15
 ff 00 00 15 00 ff ff ff ff ff 00 15 00 00 00 00 00 00 15 00 ff ff ff ff ff 00 15 00 00 ff
@@ -685,7 +685,7 @@ ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff
 15 00 00 00 00 00 00 00 00 00 00 00 00 00 14 14 00 00 00 00 00 00 00 00 00 00 00 00 00 15
 ```
 
-### Neo Babylon -
+### Neo Babylon - Power Plant
 ```
 ff 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ff
 ff 00 ff ff ff ff ff ff ff ff ff ff ff ff 00 00 ff ff ff ff ff ff ff ff ff ff ff ff 00 ff
@@ -704,7 +704,7 @@ ff ff ff 1a ff ff 16 ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff 16 ff ff 1a
 00 00 00 00 00 00 00 00 00 00 15 14 14 15 14 14 15 14 14 15 00 00 00 00 00 00 00 00 00 00
 ```
 
-### Sunken City -
+### Sunken City - Scar Tissue
 ```
 ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff
 ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff
@@ -723,7 +723,7 @@ ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff
 ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff
 ```
 
-### Sunken City -
+### Sunken City - Indigestion
 ```
 ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff
 ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff
@@ -742,7 +742,7 @@ ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff
 ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff
 ```
 
-### Sunken City -
+### Sunken City - Temple of Frog
 ```
 18 18 18 18 18 0f 0f 0f 0f 0f 0f 0f 0f 0f 0f 0f 0f 0f 0f 0f 0f 0f 0f 0f 0f 18 18 18 18 18
 18 ff ff ff 18 0f 0f 0f 0f 0f 0f 0f 0f 0f 0f 0f 0f 0f 0f 0f 0f 0f 0f 0f 0f 18 ff ff ff 18
@@ -761,7 +761,7 @@ ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff
 07 07 07 07 07 07 07 07 07 07 07 07 07 07 07 07 07 07 07 07 07 07 07 07 07 07 07 07 07 07
 ```
 
-### Sunken City -
+### Sunken City - Pipe Dream
 ```
 00 ff ff 18 18 18 18 18 18 18 18 18 18 ff ff ff ff 18 18 18 18 18 18 18 18 18 18 ff ff 00
 00 ff ff 18 ff 00 00 00 0f 0f 17 17 ff ff ff ff ff ff 17 17 0f 0f 00 00 00 ff 18 ff ff 00
@@ -780,7 +780,7 @@ ff ff 18 00 00 18 00 00 0f 0f 18 18 18 18 0f 0f 18 18 18 18 0f 0f 00 00 18 00 00
 00 ff ff 00 00 18 18 18 18 18 18 18 18 18 07 07 18 18 18 18 18 18 18 18 18 00 00 ff ff 00
 ```
 
-### Sunken City -
+### Sunken City - Passions
 ```
 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
 18 18 ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff 18 18
