@@ -43,7 +43,7 @@ of byte value to symbol is documented in the Tiles section below.
 ### Unused Small Tiles
 ![image](https://user-images.githubusercontent.com/231118/148690712-acdcb037-ebf5-4df1-92e6-161fbd385478.png)
 
-These byte offsets wrap around to the smaller version of icon in the sprite sheet
+These byte offsets wrap around to the smaller version of icon in the sprite sheet however none of these symbols are currently used in the `dmpreview.tok`
 
 * `0x1b` - Floor
 * `0x1c` - Pushblock
