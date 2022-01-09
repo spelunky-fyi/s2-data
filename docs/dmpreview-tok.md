@@ -13,24 +13,24 @@ of byte value to symbol is documented in the Tiles section below.
 * `0x02` - Crate
 * `0x03` - Ladder
 * `0x04` - Vines
-* `0x05` - 
-* `0x06` - 
+* `0x05` - Chain
+* `0x06` - Pole
 * `0x07` - Spikes
-* `0x08` - 
-* `0x09` - 
-* `0x0a` - 
-* `0x0b` - 
-* `0x0c` - 
-* `0x0d` - 
-* `0x0e` - 
-* `0x0f` - Water
-* `0x10` - 
-* `0x11` - 
-* `0x12` - 
-* `0x13` - 
-* `0x14` - 
-* `0x15` - 
-* `0x16` - 
+* `0x08` - Ceiling Spikes
+* `0x09` - Bone Blocks
+* `0x0a` - Spear Trap
+* `0x0b` - Falling Platform
+* `0x0c` - Conveyer Left
+* `0x0d` - Conveyer Right
+* `0x0e` - TNT
+* `0x0f` - Water / Lava (Liquid)
+* `0x10` - Crush Trap
+* `0x11` - Quick Sand (Down Arrow)
+* `0x12` - Ice
+* `0x13` - Spring
+* `0x14` - Elevator
+* `0x15` - Lasers
+* `0x16` - Spark Balls
 * `0x17` - Regen
 * `0x18` - Tubes
 * `0x19` - 
