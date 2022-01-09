@@ -8,6 +8,8 @@ of byte value to symbol is documented in the Tiles section below.
 
 ## Tiles
 
+![image](https://user-images.githubusercontent.com/231118/148674207-7d397a9e-f33f-469a-8a02-df4e6a039e73.png)
+
 * `0x00` - Floor
 * `0x01` - Push Block
 * `0x02` - Crate
